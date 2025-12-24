@@ -1,0 +1,61 @@
+/* src/sections/DomeSection.css */
+
+.dome-section {
+  min-height: 100vh;
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(to bottom, #ffffff 0%, #d4d4d4 55%, #ffffff 100%);
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+/* keep header overlayed, not taking layout height */
+.dome-header {
+  position: absolute;
+  top: 22px;
+  left: 0;
+  right: 0;
+  z-index: 30;
+  padding: 24px;
+  text-align: center;
+  pointer-events: none; /* let dome drag work */
+}
+
+.dome-kicker {
+  font-size: 12px;
+  letter-spacing: 0.35em;
+  opacity: 0.78;
+}
+
+.dome-title {
+  margin-top: 10px;
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  font-weight: 900;
+  line-height: 1.05;
+  color: black;
+}
+
+.dome-subtitle {
+  margin-top: 10px;
+  color: rgba(0, 0, 0, 0.78);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+/* ✅ FULL viewport stage */
+.dome-stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+}
+
+/* ensure DomeGallery fills */
+.dome-stage > * {
+  width: 100%;
+  height: 100%;
+}

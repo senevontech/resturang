@@ -1,0 +1,33 @@
+.interactive-dots-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-color: #000000;
+
+  /* Dot grid */
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,0.35) 1px, transparent 1px);
+  background-size: 22px 22px;
+
+  /* Cursor interaction */
+  --mx: -9999px;
+  --my: -9999px;
+
+  mask-image: radial-gradient(
+    180px 180px at var(--mx) var(--my),
+    rgba(255,255,255,1),
+    rgba(255,255,255,0.2) 40%,
+    rgba(255,255,255,0.05) 60%,
+    rgba(255,255,255,0) 70%
+  );
+
+  -webkit-mask-image: radial-gradient(
+    180px 180px at var(--mx) var(--my),
+    rgba(255,255,255,1),
+    rgba(255,255,255,0.2) 40%,
+    rgba(255,255,255,0.05) 60%,
+    rgba(255,255,255,0) 70%
+  );
+
+  transition: mask-position 0.05s linear;
+}

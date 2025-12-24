@@ -1,0 +1,6 @@
+import chicken from "../assets/hero/chicken-fry.png";
+import broccoli from "../assets/hero/brocoli.png";
+import table from "../assets/hero/table.png";
+import dish1 from "../assets/hero/pizza.png";
+import dish2 from "../assets/hero/potato.png";
+import dish3 from "../assets/hero/chicken.png";

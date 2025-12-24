@@ -1,0 +1,117 @@
+/* src/components/HeroScrollStack.css */
+
+/* Wrap */
+.hero-stack-wrap {
+  width: 100%;
+}
+
+/* IMPORTANT:
+   Your ScrollStack scroller is overflow-y:auto by default.
+   For hero landing, we use window scroll => make it behave like normal flow. */
+.hero-stack.scroll-stack-scroller {
+  height: auto;
+  overflow: visible;
+}
+
+/* Remove the big padding used by default stack-inner */
+.hero-stack .scroll-stack-inner {
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* Make each ScrollStack card be full screen and without margins */
+.hero-stack .scroll-stack-card.hero-card {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Slide layout */
+.hero-slide {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.08);
+  will-change: transform;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+      1200px 600px at 20% 30%,
+      rgba(255, 255, 255, 0.10),
+      rgba(0, 0, 0, 0.55) 55%,
+      rgba(0, 0, 0, 0.75)
+    );
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.hero-copy {
+  max-width: 900px;
+  padding: 0 24px;
+  margin: 0 auto;
+  color: white;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: clamp(2rem, 4vw, 4rem);
+  font-weight: 700;
+  line-height: 1.05;
+}
+
+.hero-subtitle {
+  margin-top: 14px;
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.hero-cta-row {
+  margin-top: 22px;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.hero-btn {
+  padding: 12px 18px;
+  border-radius: 14px;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.10);
+  color: white;
+  cursor: pointer;
+}
+
+.hero-btn-primary {
+  background: rgba(255, 255, 255, 0.92);
+  color: black;
+  border-color: transparent;
+}
+
+.hero-btn-primary:hover {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.hero-btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
