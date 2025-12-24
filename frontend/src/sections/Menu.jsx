@@ -86,22 +86,29 @@ const galleryData = [
 ];
 
 export default function CircularGalleryAndMenu() {
+
+  const galleryRadius = typeof window !== "undefined"
+  ? (window.innerWidth < 768 ? 260 : 520)
+  : 520;
+
   return (
     <section className="w-full text-[#2b2417]">
       {/* ================== PART 1: CIRCULAR GALLERY ================== */}
-      <div className="w-full relative" style={{ height: "350vh" }}>
+      {/* <div className="w-full relative" style={{ height: "350vh" }}> */}
+      <div className="w-full relative h-[220vh] md:h-[350vh]">
+
         {/* Sticky area */}
         <div className="w-full h-screen sticky top-0 flex items-center justify-center overflow-hidden relative">
           {/* Interactive dots background */}
           <InteractiveDotsBg
             baseBg="#b8a882"
             dotColor="rgba(132, 110, 44, 0.95)"
-            count={110}
-            radius={140}
+            count={60}
+            radius={100}
           />
 
           {/* Overlay heading */}
-          <div className="absolute top-16 z-10 text-center px-4">
+          <div className="absolute top-10  md:top-16 z-10 text-center px-4">
             <h2 className="text-3xl md:text-5xl font-extrabold tracking-wide text-[#4a3b22]">
               Explore Our Specials
             </h2>
@@ -112,7 +119,9 @@ export default function CircularGalleryAndMenu() {
 
           {/* Gallery container */}
           <div className="w-full h-full relative z-[2]">
-            <CircularGallery items={galleryData} radius={520} autoRotateSpeed={0.03} />
+            {/* <CircularGallery items={galleryData} radius={520} autoRotateSpeed={0.03} /> */}
+            <CircularGallery items={galleryData} radius={galleryRadius} autoRotateSpeed={0.03} />
+
           </div>
 
           {/* soft overlay for better contrast */}
@@ -132,8 +141,8 @@ export default function CircularGalleryAndMenu() {
           <InteractiveDotsBg
             baseBg="transparent"
             dotColor="rgba(245,198,51,0.55)"
-            count={90}
-            radius={120}
+            count={50}
+            radius={100}
           />
         </div>
 
@@ -155,7 +164,9 @@ export default function CircularGalleryAndMenu() {
 
           {/* ✅ FlowingMenu area */}
           {/* ✅ Full-width FlowingMenu */}
-          <div className="relative w-full h-[70vh] mt-16">
+          {/* <div className="relative w-full h-[70vh] mt-16"> */}
+          <div className="relative w-full h-[52vh] sm:h-[60vh] md:h-[70vh] mt-10 md:mt-16">
+
             <FlowingMenu items={demoItems} />
           </div>
 

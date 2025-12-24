@@ -9,6 +9,10 @@ const DEFAULT_DEPTH_RANGE = 50;
 const MAX_HORIZONTAL_OFFSET = 8;
 const MAX_VERTICAL_OFFSET = 8;
 
+
+
+
+
 const createClothMaterial = () => {
   return new THREE.ShaderMaterial({
     transparent: true,
@@ -133,8 +137,11 @@ function GalleryScene({
     blurOut: { start: 0.9, end: 1.0 },
     maxBlur: 3.0,
   },
+  // ✅ NEW: event bridge from parent for touch drag
+  interactionRef,
 }) {
   const [scrollVelocity, setScrollVelocity] = useState(0);
+
   const [autoPlay, setAutoPlay] = useState(true);
   const lastInteraction = useRef(Date.now());
 
@@ -189,15 +196,21 @@ function GalleryScene({
     }));
   }, [spatialPositions, totalImages, visibleCount]);
 
-  const handleWheel = useCallback(
-    (event) => {
-      event.preventDefault();
-      setScrollVelocity((prev) => prev + event.deltaY * 0.01 * speed);
-      setAutoPlay(false);
-      lastInteraction.current = Date.now();
-    },
-    [speed]
-  );
+  // ✅ Provide a safe way for parent touch-drag to push velocity
+  useEffect(() => {
+    if (!interactionRef) return;
+    interactionRef.current = {
+      nudge: (delta) => {
+        setScrollVelocity((prev) => prev + delta * 0.01 * speed);
+        setAutoPlay(false);
+        lastInteraction.current = Date.now();
+      },
+      stopAuto: () => {
+        setAutoPlay(false);
+        lastInteraction.current = Date.now();
+      },
+    };
+  }, [interactionRef, speed]);
 
   const handleKeyDown = useCallback(
     (event) => {
@@ -215,17 +228,9 @@ function GalleryScene({
   );
 
   useEffect(() => {
-    const canvas = document.querySelector("canvas");
-    if (!canvas) return;
-
-    canvas.addEventListener("wheel", handleWheel, { passive: false });
     document.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      canvas.removeEventListener("wheel", handleWheel);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [handleWheel, handleKeyDown]);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [handleKeyDown]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -235,7 +240,9 @@ function GalleryScene({
   }, []);
 
   useFrame((state, delta) => {
+    // autoplay
     if (autoPlay) setScrollVelocity((prev) => prev + 0.3 * delta);
+    // damping
     setScrollVelocity((prev) => prev * 0.95);
 
     const time = state.clock.getElapsedTime();
@@ -392,6 +399,18 @@ export default function InfiniteGallery({
 }) {
   const [webglSupported, setWebglSupported] = useState(true);
 
+  // ✅ container where we attach wheel + touch/drag
+  const containerRef = useRef(null);
+
+  // ✅ bridge from parent -> GalleryScene
+  const interactionRef = useRef(null);
+
+  // ✅ touch drag state
+  const draggingRef = useRef(false);
+  const lastYRef = useRef(0);
+  
+  const startYRef = useRef(0);
+const hasLockedDragRef = useRef(false);
   useEffect(() => {
     try {
       const canvas = document.createElement("canvas");
@@ -400,6 +419,84 @@ export default function InfiniteGallery({
     } catch {
       setWebglSupported(false);
     }
+  }, []);
+
+  // ✅ Wheel on the correct container (not querySelector('canvas'))
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const onWheel = (e) => {
+      e.preventDefault();
+      interactionRef.current?.nudge(e.deltaY);
+      interactionRef.current?.stopAuto?.();
+    };
+
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, []);
+
+  // ✅ Touch / Pointer drag (mobile + desktop)
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const onPointerDown = (e) => {
+      draggingRef.current = true;
+      hasLockedDragRef.current = false;
+      lastYRef.current = e.clientY;
+      startYRef.current = e.clientY;
+      interactionRef.current?.stopAuto?.();
+      try {
+        el.setPointerCapture?.(e.pointerId);
+      } catch { }
+    };
+
+    const onPointerMove = (e) => {
+      if (!draggingRef.current) return;
+
+      const totalDy = startYRef.current - e.clientY; // overall move from start
+
+      // ✅ only lock gallery drag after user moves enough (intent)
+      const THRESHOLD = 14; // px
+      if (!hasLockedDragRef.current) {
+        if (Math.abs(totalDy) < THRESHOLD) return;
+
+        hasLockedDragRef.current = true;
+
+        // ✅ now we take control & stop page scrolling
+        interactionRef.current?.stopAuto?.();
+        try {
+          containerRef.current?.setPointerCapture?.(e.pointerId);
+        } catch { }
+      }
+
+      const dy = lastYRef.current - e.clientY;
+      lastYRef.current = e.clientY;
+
+      interactionRef.current?.nudge(dy * 2.2);
+    };
+
+
+    const endDrag = () => {
+      draggingRef.current = false;
+      hasLockedDragRef.current = false;
+    };
+
+
+    el.addEventListener("pointerdown", onPointerDown, { passive: true });
+    el.addEventListener("pointermove", onPointerMove, { passive: true });
+    el.addEventListener("pointerup", endDrag, { passive: true });
+    el.addEventListener("pointercancel", endDrag, { passive: true });
+    el.addEventListener("pointerleave", endDrag, { passive: true });
+
+    return () => {
+      el.removeEventListener("pointerdown", onPointerDown);
+      el.removeEventListener("pointermove", onPointerMove);
+      el.removeEventListener("pointerup", endDrag);
+      el.removeEventListener("pointercancel", endDrag);
+      el.removeEventListener("pointerleave", endDrag);
+    };
   }, []);
 
   if (!webglSupported) {
@@ -411,7 +508,17 @@ export default function InfiniteGallery({
   }
 
   return (
-    <div className={className} style={style}>
+    <div
+      ref={containerRef}
+      className={className}
+      style={{
+        ...style,
+        // ✅ REQUIRED for mobile dragging to work properly
+        touchAction: "pan-y",
+        WebkitUserSelect: "none",
+        userSelect: "none",
+      }}
+    >
       <Canvas camera={{ position: [0, 0, 0], fov: 55 }} gl={{ antialias: true, alpha: true }}>
         <GalleryScene
           images={images}
@@ -419,6 +526,7 @@ export default function InfiniteGallery({
           blurSettings={blurSettings}
           speed={speed}
           visibleCount={visibleCount}
+          interactionRef={interactionRef}
         />
       </Canvas>
     </div>
