@@ -373,6 +373,10 @@ function FallbackGallery({ images }) {
             key={i}
             src={img.src || "/placeholder.svg"}
             alt={img.alt}
+            loading="lazy"
+            decoding="async"
+            width={320}
+            height={200}
             className="w-full h-32 object-cover rounded"
           />
         ))}

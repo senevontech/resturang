@@ -479,6 +479,11 @@ export default function RestaurantHero() {
                   <img
                     src="/images/chicken-fry.png"
                     alt="Fried Chicken"
+                    loading="eager"
+                    decoding="async"
+                    fetchPriority="high"
+                    width={600}
+                    height={600}
                     className={`
                       object-contain drop-shadow-2xl
                       ${isMobile ? "w-[48vw] max-w-[260px]" : "w-44 h-44 md:w-[30rem] md:h-[30rem]"}
@@ -503,6 +508,11 @@ export default function RestaurantHero() {
                   <img
                     src="/images/brocoli.png"
                     alt="Broccoli"
+                    loading="eager"
+                    decoding="async"
+                    fetchPriority="high"
+                    width={600}
+                    height={600}
                     className={`
                       object-contain drop-shadow-2xl
                       ${isMobile ? "w-[48vw] max-w-[260px]" : "w-44 h-44 md:w-[30rem] md:h-[30rem]"}
@@ -516,7 +526,7 @@ export default function RestaurantHero() {
                   className={`
                     absolute left-1/2 -translate-x-1/2 w-full
                     ${isMobile ? "max-w-[620px]" : "max-w-4xl"}
-                    bottom-8 sm:bottom-10 md:bottom-12
+                    bottom-8 sm:bottom-10 md:bottom-32
                   `}
                   style={{
                     transform: `translateY(${dishFly * 0.3}px) translateX(-50%)`,
@@ -525,6 +535,11 @@ export default function RestaurantHero() {
                   <img
                     src="/images/table.png"
                     alt="Wooden Table"
+                    loading="eager"
+                    decoding="async"
+                    fetchPriority="high"
+                    width={1200}
+                    height={600}
                     className="w-full object-contain drop-shadow-2xl pointer-events-none"
                     draggable={false}
                   />
@@ -532,7 +547,7 @@ export default function RestaurantHero() {
                   {/* DISHES */}
                   <div
                     className={`
-                      absolute left-1/2 -translate-x-1/2 flex items-end justify-center pointer-events-none
+                      absolute left-1/2 -translate-x-1/2 flex items-end justify-center gap-6 md:gap-8 pointer-events-none
                       ${isMobile ? "gap-6" : "gap-8 md:gap-6"}
                     `}
                     style={{
@@ -544,20 +559,31 @@ export default function RestaurantHero() {
                     <img
                       src="/images/pizza.png"
                       alt="Pizza"
+                      loading="eager"
+                      decoding="async"
+                      width={300}
+                      height={300}
                       className={`
                         object-contain drop-shadow-xl
                         ${isMobile ? "w-[22vw] max-w-[110px]" : "w-32 md:w-40"}
                       `}
                       draggable={false}
                     />
+
                     <img
                       src="/images/potato.png"
                       alt="Potato"
+                      loading="eager"
+                      decoding="async"
+                      width={320}
+                      height={320}
                       className={`
                         object-contain drop-shadow-xl
                         ${isMobile ? "w-[26vw] max-w-[130px]" : "w-36 md:w-44"}
                       `}
                       draggable={false}
+                      style={{ marginBottom: isMobile ? 2 : 4 }}
+
                     //   style={{
                     //     transform: `translateY(${dishFly * (isMobile ? 0.08 : 0.12)}px)`,
                     //   }}
@@ -565,6 +591,10 @@ export default function RestaurantHero() {
                     <img
                       src="/images/chicken.png"
                       alt="Chicken"
+                      loading="eager"
+                      decoding="async"
+                      width={300}
+                      height={300}
                       className={`
                         object-contain drop-shadow-xl
                         ${isMobile ? "w-[22vw] max-w-[110px]" : "w-32 md:w-40"}
@@ -607,8 +637,6 @@ export default function RestaurantHero() {
         </div>
 
         <style>{`
-          @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Text:wght@400;600;700&display=swap');
-
           @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }

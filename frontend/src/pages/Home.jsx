@@ -29,6 +29,7 @@ import Reservation from "../sections/Reservation";
 import About from "../sections/about";
 import Footer from "../sections/footer";
 import MenuOverlay from "../sections/MenuOverlay";
+import LazySection from "../components/LazySection";
 
 export default function Home() {
   return (
