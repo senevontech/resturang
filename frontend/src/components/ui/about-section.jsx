@@ -14,7 +14,7 @@ export default function AboutSection3() {
             opacity: 1,
             filter: "blur(0px)",
             transition: {
-                delay: i * 0.4,
+                delay: i * 0.1,
                 duration: 0.5,
             },
         }),
@@ -30,7 +30,7 @@ export default function AboutSection3() {
             opacity: 1,
             filter: "blur(0px)",
             transition: {
-                delay: i * 0.4,
+                delay: i * 0.1,
                 duration: 0.5,
             },
         }),
