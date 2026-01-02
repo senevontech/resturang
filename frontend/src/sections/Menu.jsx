@@ -389,7 +389,7 @@ export default function CircularGalleryAndMenu() {
 
       {/* ================== PART 2: OUR MENU ================== */}
       {/* <section className="relative min-h-screen bg-gradient-to-b from-[#2b2417] to-[#1c170f] text-white py-24 px-8 overflow-hidden"> */}
-      <section className="relative min-h-screen bg-gradient-to-b from-[#b8a882] to-[#1c170f] text-white py-24 px-8 overflow-hidden">
+      <section className="relative min-h-screen bg-gradient-to-b from-[#b8a882] to-[#b8a882] text-white py-24 px-8 overflow-hidden">
         {/* Dots behind menu */}
         <div className="absolute inset-0 opacity-40">
           <InteractiveDotsBg
