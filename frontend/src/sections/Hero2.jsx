@@ -360,7 +360,7 @@
 
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import Antigravity from "../components/ui/AntiGravity";
+// import Antigravity from "../components/ui/AntiGravity";
 
 export default function RestaurantHero() {
   const heroRef = useRef(null);
@@ -416,7 +416,7 @@ export default function RestaurantHero() {
       >
         {/* ✅ Antigravity background layer (smaller + fewer + darker) */}
         <div className="absolute inset-0 z-[0] pointer-events-none">
-          <Antigravity
+          {/* <Antigravity
             // dark olive / brown to match your warm background (NOT pure black)
             color="#52480fff"
             // fewer particles
@@ -436,7 +436,7 @@ export default function RestaurantHero() {
             particleShape="capsule"
             fieldStrength={12}
             autoAnimate
-          />
+          /> */}
 
           {/* darker blend so particles sit subtle */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/15" />

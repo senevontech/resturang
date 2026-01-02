@@ -8,12 +8,15 @@ import About from "../sections/about";
 import Footer from "../sections/footer";
 import MenuOverlay from "../sections/MenuOverlay";
 
+import FloatingActions from "../components/floatingButton";
 import LazySection from "../components/LazySection";
 
 export default function Home() {
   return (
     <div className="min-h-screen">
       <MenuOverlay />
+
+      <FloatingActions />
 
       <div id="home"><Hero /></div>
       <div id="menu"><Menu /></div>
