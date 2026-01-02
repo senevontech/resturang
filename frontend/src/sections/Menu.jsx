@@ -1,105 +1,355 @@
-import React from "react";
-import { CircularGallery } from "../components/ui/circular-gallery";
-import InteractiveDotsBg from "../components/ui/interactive-dots";
-import FlowingMenu from "../components/ui/flowingMenu";
+// import React from "react";
+// import { CircularGallery } from "../components/ui/circular-gallery";
+// import InteractiveDotsBg from "../components/ui/interactive-dots";
+// import FlowingMenu from "../components/ui/flowingMenu";
+
+// // const demoItems = [
+// //   { link: "#", text: "Indian Classics", image: "/images/img1.jpg" },
+// //   { link: "#", text: "Chinese Delights", image: "/images/img2.jpg" },
+// //   { link: "#", text: "Continental Favorites", image: "/images/img3.jpg" },
+// //   { link: "#", text: "Desserts & Drinks", image: "/images/img4.jpg" },
+// // ];
+
 
 // const demoItems = [
-//   { link: "#", text: "Indian Classics", image: "/images/img1.jpg" },
-//   { link: "#", text: "Chinese Delights", image: "/images/img2.jpg" },
-//   { link: "#", text: "Continental Favorites", image: "/images/img3.jpg" },
-//   { link: "#", text: "Desserts & Drinks", image: "/images/img4.jpg" },
+//   { link: "/menus", text: "Indian Classics", image: "/images/img1.jpg" },
+//   { link: "/menus", text: "Chinese Delights", image: "/images/img2.jpg" },
+//   { link: "/menus", text: "Continental Favorites", image: "/images/img3.jpg" },
+//   { link: "/menus", text: "Desserts & Drinks", image: "/images/img4.jpg" },
 // ];
 
+// /* -------------------- LOCAL GALLERY DATA --------------------
+//    Put images in: public/images/gallery/*
+//    and use url: "/images/gallery/xxx.jpg"
+// -------------------------------------------------------------- */
+// const galleryData = [
+//   {
+//     common: "Signature Platter",
+//     binomial: "Chef Special",
+//     photo: {
+//       url: "/images/img1.jpg",
+//       text: "signature platter",
+//       pos: "50% 50%",
+//       by: "Resturang",
+//     },
+//   },
+//   {
+//     common: "Woodfire Pizza",
+//     binomial: "Italian",
+//     photo: {
+//       url: "/images/img2.jpg",
+//       text: "woodfire pizza",
+//       pos: "50% 50%",
+//       by: "Resturang",
+//     },
+//   },
+//   {
+//     common: "Spicy Chicken",
+//     binomial: "Indian",
+//     photo: {
+//       url: "/images/img3.jpg",
+//       text: "spicy chicken",
+//       pos: "50% 50%",
+//       by: "Resturang",
+//     },
+//   },
+//   {
+//     common: "Dessert Bowl",
+//     binomial: "Continental",
+//     photo: {
+//       url: "/images/img4.jpg",
+//       text: "dessert bowl",
+//       pos: "50% 50%",
+//       by: "Resturang",
+//     },
+//   },
+//   {
+//     common: "Noodles",
+//     binomial: "Chinese",
+//     photo: {
+//       url: "/images/img5.jpg",
+//       text: "noodles bowl",
+//       pos: "50% 50%",
+//       by: "Resturang",
+//     },
+//   },
+//   // {
+//   //   common: "Mocktail",
+//   //   binomial: "Beverage",
+//   //   photo: {
+//   //     url: "/images/gallery/food-6.jpg",
+//   //     text: "mocktail",
+//   //     pos: "50% 50%",
+//   //     by: "Resturang",
+//   //   },
+//   // },
+// ];
+
+// export default function CircularGalleryAndMenu() {
+
+//   const galleryRadius = typeof window !== "undefined"
+//   ? (window.innerWidth < 768 ? 260 : 520)
+//   : 520;
+
+//   return (
+//     <section className="w-full text-[#2b2417]">
+//       {/* ================== PART 1: CIRCULAR GALLERY ================== */}
+//       {/* <div className="w-full relative" style={{ height: "350vh" }}> */}
+//       <div className="w-full relative h-[220vh] md:h-[350vh]">
+
+//         {/* Sticky area */}
+//         <div className="w-full h-screen sticky top-0 flex items-center justify-center overflow-hidden relative">
+//           {/* Interactive dots background */}
+//           <InteractiveDotsBg
+//             baseBg="#b8a882"
+//             dotColor="rgba(132, 110, 44, 0.95)"
+//             count={60}
+//             radius={100}
+//           />
+
+//           {/* Overlay heading */}
+//           <div className="absolute top-10  md:top-16 z-10 text-center px-4">
+//             <h2 className="text-3xl md:text-5xl font-extrabold tracking-wide text-[#4a3b22]">
+//               Explore Our Specials
+//             </h2>
+//             <p className="text-[#5a4a2f]/80 mt-2">
+//               Scroll to rotate the gallery
+//             </p>
+//           </div>
+
+//           {/* Gallery container */}
+//           <div className="w-full h-full relative z-[2]">
+//             {/* <CircularGallery items={galleryData} radius={520} autoRotateSpeed={0.03} /> */}
+//             <CircularGallery items={galleryData} radius={galleryRadius} autoRotateSpeed={0.03} />
+
+//           </div>
+
+//           {/* soft overlay for better contrast */}
+//           <div className="absolute inset-0 pointer-events-none z-[1]"
+//             style={{
+//               background:
+//                 "radial-gradient(1200px 600px at 50% 40%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0) 70%)",
+//             }}
+//           />
+//         </div>
+//       </div>
+
+//       {/* ================== PART 2: OUR MENU ================== */}
+//       <section className="relative min-h-screen bg-gradient-to-b from-[#2b2417] to-[#1c170f] text-white py-24 px-8 overflow-hidden">
+//         {/* Optional: add dots behind menu too */}
+//         <div className="absolute inset-0 opacity-40">
+//           <InteractiveDotsBg
+//             baseBg="transparent"
+//             dotColor="rgba(245,198,51,0.55)"
+//             count={50}
+//             radius={100}
+//           />
+//         </div>
+
+//         <div className="relative w-full">
+//           <h2
+//             className="text-6xl md:text-7xl font-bold text-center mb-6"
+//             style={{ fontFamily: "surg" }}
+//           >
+//             Our Menu
+//           </h2>
+
+//           <p
+//             className="text-xl text-center text-white/70 mb-14 max-w-2xl mx-auto"
+//             style={{ fontFamily: "surg" }}
+//           >
+//             Explore our carefully curated selection of dishes, each prepared with
+//             the finest ingredients and authentic recipes.
+//           </p>
+
+//           {/* ✅ FlowingMenu area */}
+//           {/* ✅ Full-width FlowingMenu */}
+//           {/* <div className="relative w-full h-[70vh] mt-16"> */}
+//           <div className="relative w-full h-[52vh] sm:h-[60vh] md:h-[70vh] mt-10 md:mt-16">
+
+//             <FlowingMenu items={demoItems} />
+//           </div>
+
+//         </div>
+//       </section>
+//     </section>
+//   );
+// }
+
+
+
+
+
+
+
+
+
+
+// import React from "react";
+// // import { CircularGallery } from "../components/ui/circular-gallery";
+// import InteractiveDotsBg from "../components/ui/interactive-dots";
+// import InfiniteMenu from "../components/ui/infiniteMenu";
+
+// const demoItems = [
+//   {
+//     link: "/menus",
+//     image: "/images/img1.jpg",
+//     title: "Indian Classics",
+//     description: "Authentic spices • signature curries",
+//   },
+//   {
+//     link: "/menus",
+//     image: "/images/img2.jpg",
+//     title: "Chinese Delights",
+//     description: "Wok-tossed flavors • sizzling plates",
+//   },
+//   {
+//     link: "/menus",
+//     image: "/images/img3.jpg",
+//     title: "Continental Favorites",
+//     description: "Comfort classics • chef specials",
+//   },
+//   {
+//     link: "/menus",
+//     image: "/images/img4.jpg",
+//     title: "Desserts & Drinks",
+//     description: "Sweet endings • refreshing sips",
+//   },
+// ];
+
+// const galleryData = [
+//   {
+//     common: "Signature Platter",
+//     binomial: "Chef Special",
+//     photo: { url: "/images/img1.jpg", text: "signature platter", pos: "50% 50%", by: "Resturang" },
+//   },
+//   {
+//     common: "Woodfire Pizza",
+//     binomial: "Italian",
+//     photo: { url: "/images/img2.jpg", text: "woodfire pizza", pos: "50% 50%", by: "Resturang" },
+//   },
+//   {
+//     common: "Spicy Chicken",
+//     binomial: "Indian",
+//     photo: { url: "/images/img3.jpg", text: "spicy chicken", pos: "50% 50%", by: "Resturang" },
+//   },
+//   {
+//     common: "Dessert Bowl",
+//     binomial: "Continental",
+//     photo: { url: "/images/img4.jpg", text: "dessert bowl", pos: "50% 50%", by: "Resturang" },
+//   },
+//   {
+//     common: "Noodles",
+//     binomial: "Chinese",
+//     photo: { url: "/images/img5.jpg", text: "noodles bowl", pos: "50% 50%", by: "Resturang" },
+//   },
+// ];
+
+// export default function CircularGalleryAndMenu() {
+//   const galleryRadius =
+//     typeof window !== "undefined" ? (window.innerWidth < 768 ? 260 : 520) : 520;
+
+//   return (
+//     <section className="w-full text-[#2b2417]">
+//       {/* ================== PART 1: CIRCULAR GALLERY ================== */}
+//       <div className="w-full relative h-[220vh] md:h-[350vh]">
+//         <div className="w-full h-screen sticky top-0 flex items-center justify-center overflow-hidden relative">
+//           <InteractiveDotsBg baseBg="#b8a882" dotColor="rgba(132, 110, 44, 0.95)" count={60} radius={100} />
+
+//           <div className="absolute top-10 md:top-16 z-10 text-center px-4">
+//             <h2 className="text-3xl md:text-5xl font-extrabold tracking-wide text-[#4a3b22]">
+//               Explore Our Specials
+//             </h2>
+//             <p className="text-[#5a4a2f]/80 mt-2">Scroll to rotate the gallery</p>
+//           </div>
+
+//           {/* <div className="w-full h-full relative z-[2]">
+//             <CircularGallery items={galleryData} radius={galleryRadius} autoRotateSpeed={0.03} />
+//           </div> */}
+
+//           <div
+//             className="absolute inset-0 pointer-events-none z-[1]"
+//             style={{
+//               background:
+//                 "radial-gradient(1200px 600px at 50% 40%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0) 70%)",
+//             }}
+//           />
+//         </div>
+//       </div>
+
+//       {/* ================== PART 2: OUR MENU ================== */}
+//       <section className="relative min-h-screen bg-gradient-to-b from-[#2b2417] to-[#1c170f] text-white py-24 px-8 overflow-hidden">
+//         <div className="absolute inset-0 opacity-40">
+//           <InteractiveDotsBg baseBg="transparent" dotColor="rgba(245,198,51,0.55)" count={50} radius={100} />
+//         </div>
+
+//         <div className="relative w-full">
+//           <h2 className="text-6xl md:text-7xl font-bold text-center mb-6" style={{ fontFamily: "surg" }}>
+//             Our Menu
+//           </h2>
+
+//           <p className="text-xl text-center text-white/70 mb-14 max-w-2xl mx-auto" style={{ fontFamily: "surg" }}>
+//             Explore our carefully curated selection of dishes, each prepared with the finest ingredients and authentic recipes.
+//           </p>
+
+//           {/* ✅ InfiniteMenu area (replacing FlowingMenu) */}
+//           <div className="relative w-full h-[52vh] sm:h-[60vh] md:h-[70vh] mt-10 md:mt-16">
+//             <InfiniteMenu items={demoItems} scale={1.0} />
+//           </div>
+//         </div>
+//       </section>
+//     </section>
+//   );
+// }
+
+
+
+
+
+
+
+
+
+
+
+import React from "react";
+import InteractiveDotsBg from "../components/ui/interactive-dots";
+import InfiniteMenu from "../components/ui/infiniteMenu";
 
 const demoItems = [
-  { link: "/menus", text: "Indian Classics", image: "/images/img1.jpg" },
-  { link: "/menus", text: "Chinese Delights", image: "/images/img2.jpg" },
-  { link: "/menus", text: "Continental Favorites", image: "/images/img3.jpg" },
-  { link: "/menus", text: "Desserts & Drinks", image: "/images/img4.jpg" },
-];
-
-/* -------------------- LOCAL GALLERY DATA --------------------
-   Put images in: public/images/gallery/*
-   and use url: "/images/gallery/xxx.jpg"
--------------------------------------------------------------- */
-const galleryData = [
   {
-    common: "Signature Platter",
-    binomial: "Chef Special",
-    photo: {
-      url: "/images/img1.jpg",
-      text: "signature platter",
-      pos: "50% 50%",
-      by: "Resturang",
-    },
+    link: "/menus",
+    image: "/images/img1.jpg",
+    title: "Indian Classics",
+    description: "Authentic spices • signature curries",
   },
   {
-    common: "Woodfire Pizza",
-    binomial: "Italian",
-    photo: {
-      url: "/images/img2.jpg",
-      text: "woodfire pizza",
-      pos: "50% 50%",
-      by: "Resturang",
-    },
+    link: "/menus",
+    image: "/images/img2.jpg",
+    title: "Chinese Delights",
+    description: "Wok-tossed flavors • sizzling plates",
   },
   {
-    common: "Spicy Chicken",
-    binomial: "Indian",
-    photo: {
-      url: "/images/img3.jpg",
-      text: "spicy chicken",
-      pos: "50% 50%",
-      by: "Resturang",
-    },
+    link: "/menus",
+    image: "/images/img3.jpg",
+    title: "Continental Favorites",
+    description: "Comfort classics • chef specials",
   },
   {
-    common: "Dessert Bowl",
-    binomial: "Continental",
-    photo: {
-      url: "/images/img4.jpg",
-      text: "dessert bowl",
-      pos: "50% 50%",
-      by: "Resturang",
-    },
+    link: "/menus",
+    image: "/images/img4.jpg",
+    title: "Desserts & Drinks",
+    description: "Sweet endings • refreshing sips",
   },
-  {
-    common: "Noodles",
-    binomial: "Chinese",
-    photo: {
-      url: "/images/img5.jpg",
-      text: "noodles bowl",
-      pos: "50% 50%",
-      by: "Resturang",
-    },
-  },
-  // {
-  //   common: "Mocktail",
-  //   binomial: "Beverage",
-  //   photo: {
-  //     url: "/images/gallery/food-6.jpg",
-  //     text: "mocktail",
-  //     pos: "50% 50%",
-  //     by: "Resturang",
-  //   },
-  // },
 ];
 
 export default function CircularGalleryAndMenu() {
-
-  const galleryRadius = typeof window !== "undefined"
-  ? (window.innerWidth < 768 ? 260 : 520)
-  : 520;
-
   return (
     <section className="w-full text-[#2b2417]">
-      {/* ================== PART 1: CIRCULAR GALLERY ================== */}
-      {/* <div className="w-full relative" style={{ height: "350vh" }}> */}
-      <div className="w-full relative h-[220vh] md:h-[350vh]">
-
-        {/* Sticky area */}
+      {/* ================== PART 1: INTRO (NO CIRCULAR GALLERY) ================== */}
+      {/* <div className="w-full relative h-[120vh] md:h-[140vh]">
         <div className="w-full h-screen sticky top-0 flex items-center justify-center overflow-hidden relative">
-          {/* Interactive dots background */}
+          
           <InteractiveDotsBg
             baseBg="#b8a882"
             dotColor="rgba(132, 110, 44, 0.95)"
@@ -107,36 +357,40 @@ export default function CircularGalleryAndMenu() {
             radius={100}
           />
 
-          {/* Overlay heading */}
-          <div className="absolute top-10  md:top-16 z-10 text-center px-4">
-            <h2 className="text-3xl md:text-5xl font-extrabold tracking-wide text-[#4a3b22]">
+          
+          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-4">
+            <h2 className="text-4xl md:text-6xl font-extrabold tracking-wide text-[#4a3b22]">
               Explore Our Specials
             </h2>
-            <p className="text-[#5a4a2f]/80 mt-2">
-              Scroll to rotate the gallery
+            <p className="text-[#5a4a2f]/80 mt-3 text-base md:text-lg max-w-xl">
+              Discover flavors crafted with passion — then dive into our menu
+              below.
             </p>
+
+            
+            <div className="mt-10 flex flex-col items-center gap-2 text-[#4a3b22]/70">
+              <span className="text-sm tracking-widest uppercase">
+                Scroll Down
+              </span>
+              <span className="text-2xl animate-bounce">↓</span>
+            </div>
           </div>
 
-          {/* Gallery container */}
-          <div className="w-full h-full relative z-[2]">
-            {/* <CircularGallery items={galleryData} radius={520} autoRotateSpeed={0.03} /> */}
-            <CircularGallery items={galleryData} radius={galleryRadius} autoRotateSpeed={0.03} />
-
-          </div>
-
-          {/* soft overlay for better contrast */}
-          <div className="absolute inset-0 pointer-events-none z-[1]"
+          
+          <div
+            className="absolute inset-0 pointer-events-none z-[1]"
             style={{
               background:
                 "radial-gradient(1200px 600px at 50% 40%, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0) 70%)",
             }}
           />
         </div>
-      </div>
+      </div> */}
 
       {/* ================== PART 2: OUR MENU ================== */}
-      <section className="relative min-h-screen bg-gradient-to-b from-[#2b2417] to-[#1c170f] text-white py-24 px-8 overflow-hidden">
-        {/* Optional: add dots behind menu too */}
+      {/* <section className="relative min-h-screen bg-gradient-to-b from-[#2b2417] to-[#1c170f] text-white py-24 px-8 overflow-hidden"> */}
+      <section className="relative min-h-screen bg-gradient-to-b from-[#b8a882] to-[#1c170f] text-white py-24 px-8 overflow-hidden">
+        {/* Dots behind menu */}
         <div className="absolute inset-0 opacity-40">
           <InteractiveDotsBg
             baseBg="transparent"
@@ -148,30 +402,27 @@ export default function CircularGalleryAndMenu() {
 
         <div className="relative w-full">
           <h2
-            className="text-6xl md:text-7xl font-bold text-center mb-6"
+            className="text-5xl md:text-7xl font-bold text-center mb-6"
             style={{ fontFamily: "surg" }}
           >
             Our Menu
           </h2>
 
           <p
-            className="text-xl text-center text-white/70 mb-14 max-w-2xl mx-auto"
+            className="text-base md:text-xl text-center text-white/70 mb-12 md:mb-14 max-w-2xl mx-auto"
             style={{ fontFamily: "surg" }}
           >
             Explore our carefully curated selection of dishes, each prepared with
             the finest ingredients and authentic recipes.
           </p>
 
-          {/* ✅ FlowingMenu area */}
-          {/* ✅ Full-width FlowingMenu */}
-          {/* <div className="relative w-full h-[70vh] mt-16"> */}
+          {/* ✅ InfiniteMenu */}
           <div className="relative w-full h-[52vh] sm:h-[60vh] md:h-[70vh] mt-10 md:mt-16">
-
-            <FlowingMenu items={demoItems} />
+            <InfiniteMenu items={demoItems} scale={1.0} />
           </div>
-
         </div>
       </section>
     </section>
   );
 }
+
