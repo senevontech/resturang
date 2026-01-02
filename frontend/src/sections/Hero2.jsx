@@ -1,7 +1,25 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // import React, { useEffect, useMemo, useRef, useState } from "react";
+// // import Antigravity from "../components/ui/AntiGravity";
 
 // export default function RestaurantHero() {
 //   const heroRef = useRef(null);
@@ -12,9 +30,10 @@
 
 //   useEffect(() => {
 //     const onScroll = () => setScrollY(window.scrollY);
-//     window.addEventListener("scroll", onScroll, { passive: true });
+//     const onResize = () =>
+//       setVw(typeof window !== "undefined" ? window.innerWidth : 1200);
 
-//     const onResize = () => setVw(window.innerWidth);
+//     window.addEventListener("scroll", onScroll, { passive: true });
 //     window.addEventListener("resize", onResize, { passive: true });
 
 //     return () => {
@@ -25,7 +44,6 @@
 
 //   const isMobile = vw < 768;
 
-//   // --- scroll math (mobile uses softer values) ---
 //   const heroHeight = isMobile ? 650 : 900;
 //   const scrollProgress = Math.min(scrollY / heroHeight, 1);
 
@@ -37,10 +55,12 @@
 //   const broccoliFly = scrollY * (isMobile ? -0.2 : -0.7);
 //   const dishFly = scrollY * (isMobile ? -0.12 : -0.5);
 
-//   const itemOpacity = Math.max(1 - scrollProgress * (isMobile ? 1.15 : 1.5), 0);
+//   const itemOpacity = Math.max(
+//     1 - scrollProgress * (isMobile ? 1.15 : 1.5),
+//     0
+//   );
 //   const rotationAmount = scrollProgress * (isMobile ? 45 : 180);
 
-//   // ✅ Dishes a bit higher above table now (mobile + desktop)
 //   const dishBottom = useMemo(() => (isMobile ? "26%" : "26%"), [isMobile]);
 
 //   return (
@@ -53,9 +73,38 @@
 //             "linear-gradient(135deg, #d4c5a0 0%, #c9b896 50%, #b8a882 100%)",
 //         }}
 //       >
+//         {/* ✅ Antigravity background layer (smaller + fewer + darker) */}
+//         <div className="absolute inset-0 z-[0] pointer-events-none">
+//           {/* <Antigravity
+//             // dark olive / brown to match your warm background (NOT pure black)
+//             color="#52480fff"
+//             // fewer particles
+//             count={isMobile ? 105 : 200}
+//             // smaller particles
+//             particleSize={isMobile ? 0.65 : 0.85}
+//             // calmer motion
+//             magnetRadius={isMobile ? 6 : 8}
+//             ringRadius={isMobile ? 6 : 8}
+//             waveSpeed={0.35}
+//             waveAmplitude={0.55}
+//             lerpSpeed={0.08}
+//             particleVariance={0.8}
+//             rotationSpeed={0.05}
+//             depthFactor={0.75}
+//             pulseSpeed={2.2}
+//             particleShape="capsule"
+//             fieldStrength={12}
+//             autoAnimate
+//           /> */}
+
+//           {/* darker blend so particles sit subtle */}
+//           <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/15" />
+//           <div className="absolute inset-0 opacity-70 bg-[radial-gradient(900px_500px_at_50%_30%,rgba(255,255,255,0.12),transparent_70%)]" />
+//         </div>
+
 //         {/* Big watermark */}
 //         <div
-//           className="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none"
+//           className="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none z-[1]"
 //           style={{
 //             transform: `translateY(${bgParallax}px)`,
 //             opacity: itemOpacity,
@@ -132,12 +181,8 @@
 //             }}
 //           >
 //             <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-8">
-//               <div
-//                 className={`relative ${
-//                   isMobile ? "h-[62svh] min-h-[520px]" : "h-[62svh] min-h-[520px]"
-//                 }`}
-//               >
-//                 {/* ✅ CHICKEN bigger */}
+//               <div className="relative h-[62svh] min-h-[520px]">
+//                 {/* CHICKEN */}
 //                 <div
 //                   className={`
 //                     pointer-events-none absolute z-20
@@ -166,7 +211,7 @@
 //                   />
 //                 </div>
 
-//                 {/* ✅ BROCCOLI bigger */}
+//                 {/* BROCCOLI */}
 //                 <div
 //                   className={`
 //                     pointer-events-none absolute z-20
@@ -195,7 +240,7 @@
 //                   />
 //                 </div>
 
-//                 {/* ✅ TABLE moved UP slightly */}
+//                 {/* TABLE */}
 //                 <div
 //                   className={`
 //                     absolute left-1/2 -translate-x-1/2 w-full
@@ -257,11 +302,8 @@
 //                       `}
 //                       draggable={false}
 //                       style={{ marginBottom: isMobile ? 2 : 4 }}
-
-//                     //   style={{
-//                     //     transform: `translateY(${dishFly * (isMobile ? 0.08 : 0.12)}px)`,
-//                     //   }}
 //                     />
+
 //                     <img
 //                       src="/images/chicken.png"
 //                       alt="Chicken"
@@ -286,15 +328,6 @@
 //               style={{ opacity: itemOpacity }}
 //             >
 //               <div className="flex flex-col items-center gap-2 pointer-events-none">
-//                 <span
-//                   className="text-xs sm:text-sm tracking-widest uppercase"
-//                   style={{
-//                     color: "#7a6a4f",
-//                     fontFamily: "'Crimson Text', serif",
-//                   }}
-//                 >
-                  
-//                 </span>
 //                 <svg
 //                   width="22"
 //                   height="22"
@@ -315,12 +348,10 @@
 //             from { opacity: 0; transform: translateY(20px); }
 //             to { opacity: 1; transform: translateY(0); }
 //           }
-
 //           @keyframes fadeInDown {
 //             from { opacity: 0; transform: translateY(-30px); }
 //             to { opacity: 1; transform: translateY(0); }
 //           }
-
 //           body { margin: 0; overflow-x: hidden; }
 //         `}</style>
 //       </section>
@@ -350,17 +381,7 @@
 
 
 
-
-
-
-
-
-
-
-
-
 import React, { useEffect, useMemo, useRef, useState } from "react";
-// import Antigravity from "../components/ui/AntiGravity";
 
 export default function RestaurantHero() {
   const heroRef = useRef(null);
@@ -368,6 +389,9 @@ export default function RestaurantHero() {
   const [vw, setVw] = useState(
     typeof window !== "undefined" ? window.innerWidth : 1200
   );
+
+  // ✅ load animation trigger
+  const [intro, setIntro] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrollY(window.scrollY);
@@ -377,9 +401,16 @@ export default function RestaurantHero() {
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onResize, { passive: true });
 
+    // ✅ trigger enter animation after first paint
+    const raf1 = requestAnimationFrame(() => {
+      const raf2 = requestAnimationFrame(() => setIntro(true));
+      return () => cancelAnimationFrame(raf2);
+    });
+
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onResize);
+      cancelAnimationFrame(raf1);
     };
   }, []);
 
@@ -404,6 +435,11 @@ export default function RestaurantHero() {
 
   const dishBottom = useMemo(() => (isMobile ? "26%" : "26%"), [isMobile]);
 
+  // ✅ intro dish sizing (reference-style)
+  const sideDishSize = isMobile
+    ? "w-[44vw] max-w-[220px]"
+    : "w-[22rem] md:w-[26rem] lg:w-[28rem]";
+
   return (
     <div className="relative">
       <section
@@ -414,33 +450,74 @@ export default function RestaurantHero() {
             "linear-gradient(135deg, #d4c5a0 0%, #c9b896 50%, #b8a882 100%)",
         }}
       >
-        {/* ✅ Antigravity background layer (smaller + fewer + darker) */}
+        {/* ✅ Antigravity background layer */}
         <div className="absolute inset-0 z-[0] pointer-events-none">
-          {/* <Antigravity
-            // dark olive / brown to match your warm background (NOT pure black)
-            color="#52480fff"
-            // fewer particles
-            count={isMobile ? 105 : 200}
-            // smaller particles
-            particleSize={isMobile ? 0.65 : 0.85}
-            // calmer motion
-            magnetRadius={isMobile ? 6 : 8}
-            ringRadius={isMobile ? 6 : 8}
-            waveSpeed={0.35}
-            waveAmplitude={0.55}
-            lerpSpeed={0.08}
-            particleVariance={0.8}
-            rotationSpeed={0.05}
-            depthFactor={0.75}
-            pulseSpeed={2.2}
-            particleShape="capsule"
-            fieldStrength={12}
-            autoAnimate
-          /> */}
-
-          {/* darker blend so particles sit subtle */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/15" />
           <div className="absolute inset-0 opacity-70 bg-[radial-gradient(900px_500px_at_50%_30%,rgba(255,255,255,0.12),transparent_70%)]" />
+        </div>
+
+        {/* ✅ NEW: Side dishes (glide + rotate on page load) */}
+        <div
+          className="pointer-events-none absolute inset-0 z-[9]"
+          style={{ opacity: itemOpacity }}
+        >
+          {/* LEFT dish */}
+          <div
+            className={`absolute ${isMobile ? "left-[-22vw] top-[34%]" : "left-[-8rem] top-[35%]"} -translate-y-1/2`}
+            style={{
+              transform: `
+                translateY(-50%)
+                translateY(${tableParallax * 0.08}px)
+                translateX(${intro ? "0px" : isMobile ? "-120px" : "-220px"})
+                rotate(${intro ? "0deg" : "-24deg"})
+              `,
+              transition:
+                "transform 900ms cubic-bezier(.2,.9,.2,1), opacity 900ms cubic-bezier(.2,.9,.2,1)",
+              opacity: intro ? 1 : 0,
+              filter: "drop-shadow(0 24px 30px rgba(0,0,0,0.18))",
+              willChange: "transform, opacity",
+            }}
+          >
+            <img
+              src="/images/dish1.png"
+              alt="Signature Dish Left"
+              loading="eager"
+              decoding="async"
+              width={700}
+              height={700}
+              className={`object-contain ${sideDishSize}`}
+              draggable={false}
+            />
+          </div>
+
+          {/* RIGHT dish */}
+          <div
+            className={`absolute ${isMobile ? "right-[-22vw] top-[34%]" : "right-[-8rem] top-[35%]"} -translate-y-1/2`}
+            style={{
+              transform: `
+                translateY(-50%)
+                translateY(${tableParallax * 0.08}px)
+                translateX(${intro ? "0px" : isMobile ? "120px" : "220px"})
+                rotate(${intro ? "0deg" : "24deg"})
+              `,
+              transition:
+                "transform 900ms cubic-bezier(.2,.9,.2,1), opacity 900ms cubic-bezier(.2,.9,.2,1)",
+              opacity: intro ? 1 : 0,
+              filter: "drop-shadow(0 24px 30px rgba(0,0,0,0.18))",
+              willChange: "transform, opacity",
+            }}
+          >
+            <img
+              src="/images/dish2.png"
+              alt="Signature Dish Right"
+              loading="eager"
+              decoding="async"
+              width={700}
+              height={700}
+              className={`object-contain ${sideDishSize}`}
+              draggable={false}
+            />
+          </div>
         </div>
 
         {/* Big watermark */}
@@ -699,3 +776,22 @@ export default function RestaurantHero() {
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
