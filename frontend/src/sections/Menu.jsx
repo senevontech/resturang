@@ -405,7 +405,7 @@ export default function CircularGalleryAndMenu() {
             className="text-5xl md:text-7xl font-bold text-center mb-6"
             style={{ fontFamily: "surg" }}
           >
-            Our Menu
+            Our Specials
           </h2>
 
           <p
