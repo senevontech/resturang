@@ -897,7 +897,61 @@ export default function InfiniteMenu({ items = [], scale = 1.0, onNavigate }) {
     else window.location.href = activeItem.link;
   };
 
-  return (
+  // return (
+  //   <div className="relative w-full h-full">
+  //     <canvas
+  //       ref={canvasRef}
+  //       className="cursor-grab w-full h-full overflow-hidden relative outline-none active:cursor-grabbing"
+  //     />
+
+  //     {activeItem && (
+  //       <>
+  //         <h2
+  //           className={`
+  //             select-none absolute font-black [font-size:4rem]
+  //             left-[1.6em] top-1/2 transform translate-x-[20%] -translate-y-1/2
+  //             transition-all ease-[cubic-bezier(0.25,0.1,0.25,1.0)]
+  //             ${isMoving ? "opacity-0 pointer-events-none duration-[100ms]" : "opacity-100 pointer-events-auto duration-[500ms]"}
+  //           `}
+  //         >
+  //           {activeItem.title}
+  //         </h2>
+
+  //         <p
+  //           className={`
+  //             select-none absolute max-w-[10ch] text-[1.5rem]
+  //             top-1/2 right-[1%] transition-all ease-[cubic-bezier(0.25,0.1,0.25,1.0)]
+  //             ${
+  //               isMoving
+  //                 ? "opacity-0 pointer-events-none duration-[100ms] translate-x-[-60%] -translate-y-1/2"
+  //                 : "opacity-100 pointer-events-auto duration-[500ms] translate-x-[-90%] -translate-y-1/2"
+  //             }
+  //           `}
+  //         >
+  //           {activeItem.description}
+  //         </p>
+
+  //         <div
+  //           onClick={handleButtonClick}
+  //           className={`
+  //             absolute left-1/2 z-10 w-[60px] h-[60px] grid place-items-center
+  //             bg-[#00ffff] border-[5px] border-black rounded-full cursor-pointer
+  //             transition-all ease-[cubic-bezier(0.25,0.1,0.25,1.0)]
+  //             ${
+  //               isMoving
+  //                 ? "bottom-[-80px] opacity-0 pointer-events-none duration-[100ms] scale-0 -translate-x-1/2"
+  //                 : "bottom-[3.8em] opacity-100 pointer-events-auto duration-[500ms] scale-100 -translate-x-1/2"
+  //             }
+  //           `}
+  //         >
+  //           <p className="select-none relative text-[#060010] top-[2px] text-[26px]">&#x2197;</p>
+  //         </div>
+  //       </>
+  //     )}
+  //   </div>
+  // );
+
+    return (
     <div className="relative w-full h-full">
       <canvas
         ref={canvasRef}
@@ -906,10 +960,20 @@ export default function InfiniteMenu({ items = [], scale = 1.0, onNavigate }) {
 
       {activeItem && (
         <>
+          {/* ✅ TITLE (responsive + safe on mobile) */}
           <h2
             className={`
-              select-none absolute font-black [font-size:4rem]
-              left-[1.6em] top-1/2 transform translate-x-[20%] -translate-y-1/2
+              select-none absolute font-black text-white
+              px-3 sm:px-0
+              left-1/2 sm:left-[1.6em]
+              top-[56%] sm:top-1/2
+              -translate-x-1/2 sm:translate-x-[20%]
+              -translate-y-1/2
+              text-center sm:text-left
+              whitespace-normal break-words
+              max-w-[92vw] sm:max-w-none
+              [font-size:clamp(26px,8.8vw,64px)]
+              leading-[0.9]
               transition-all ease-[cubic-bezier(0.25,0.1,0.25,1.0)]
               ${isMoving ? "opacity-0 pointer-events-none duration-[100ms]" : "opacity-100 pointer-events-auto duration-[500ms]"}
             `}
@@ -917,30 +981,43 @@ export default function InfiniteMenu({ items = [], scale = 1.0, onNavigate }) {
             {activeItem.title}
           </h2>
 
+          {/* ✅ DESCRIPTION (responsive + safe on mobile) */}
           <p
             className={`
-              select-none absolute max-w-[10ch] text-[1.5rem]
-              top-1/2 right-[1%] transition-all ease-[cubic-bezier(0.25,0.1,0.25,1.0)]
+              select-none absolute text-white/85
+              px-3 sm:px-0
+              left-1/2 sm:left-auto
+              right-auto sm:right-[1%]
+              top-[68%] sm:top-1/2
+              -translate-x-1/2 sm:translate-x-[-90%]
+              -translate-y-1/2
+              text-center sm:text-left
+              whitespace-normal break-words
+              max-w-[88vw] sm:max-w-[14ch]
+              [font-size:clamp(12px,3.6vw,18px)]
+              leading-snug
+              transition-all ease-[cubic-bezier(0.25,0.1,0.25,1.0)]
               ${
                 isMoving
-                  ? "opacity-0 pointer-events-none duration-[100ms] translate-x-[-60%] -translate-y-1/2"
-                  : "opacity-100 pointer-events-auto duration-[500ms] translate-x-[-90%] -translate-y-1/2"
+                  ? "opacity-0 pointer-events-none duration-[100ms] sm:translate-x-[-60%]"
+                  : "opacity-100 pointer-events-auto duration-[500ms]"
               }
             `}
           >
             {activeItem.description}
           </p>
 
+          {/* ✅ BUTTON (keep as is, just responsive bottom a bit) */}
           <div
             onClick={handleButtonClick}
             className={`
-              absolute left-1/2 z-10 w-[60px] h-[60px] grid place-items-center
+              absolute left-1/2 z-10 w-[56px] h-[56px] sm:w-[60px] sm:h-[60px] grid place-items-center
               bg-[#00ffff] border-[5px] border-black rounded-full cursor-pointer
               transition-all ease-[cubic-bezier(0.25,0.1,0.25,1.0)]
               ${
                 isMoving
                   ? "bottom-[-80px] opacity-0 pointer-events-none duration-[100ms] scale-0 -translate-x-1/2"
-                  : "bottom-[3.8em] opacity-100 pointer-events-auto duration-[500ms] scale-100 -translate-x-1/2"
+                  : "bottom-[2.6rem] sm:bottom-[3.8em] opacity-100 pointer-events-auto duration-[500ms] scale-100 -translate-x-1/2"
               }
             `}
           >
@@ -950,4 +1027,7 @@ export default function InfiniteMenu({ items = [], scale = 1.0, onNavigate }) {
       )}
     </div>
   );
+
+
+
 }

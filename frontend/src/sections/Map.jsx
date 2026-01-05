@@ -20,7 +20,7 @@ export default function LocationSection() {
                 title="Restaurant Location"
                 // src="https://www.google.com/maps?q=Kolkata&output=embed"
                 src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1689.4220526903605!2d88.35241366745603!3d22.55987331245918!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2sin!4v1767431396099!5m2!1sen!2sin"
-                className="w-full h-full grayscale contrast-105"
+                className="w-full h-full contrast-105"
                 loading="lazy"
               />
 
