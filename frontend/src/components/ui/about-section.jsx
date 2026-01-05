@@ -574,7 +574,7 @@ export default function AboutSection3() {
                 </p>
               </TimelineContent>
 
-              <TimelineContent
+              {/* <TimelineContent
                 as="button"
                 animationNum={16}
                 timelineRef={heroRef}
@@ -582,7 +582,29 @@ export default function AboutSection3() {
                 className="bg-neutral-900 hover:bg-neutral-950 shadow-lg shadow-neutral-900 border border-neutral-700 flex w-fit ml-auto gap-2 hover:gap-3 transition-all duration-200 ease-in-out text-white px-5 py-3 rounded-lg cursor-pointer font-semibold"
               >
                 BOOK A TABLE <ArrowRight />
+              </TimelineContent> */}
+
+              <TimelineContent
+                as="button"
+                animationNum={16}
+                timelineRef={heroRef}
+                customVariants={revealVariants}
+                onClick={() => {
+                  const el = document.getElementById("reservation");
+                  if (!el) return;
+
+                  // Lenis smooth scroll
+                  window.lenis?.scrollTo(el, {
+                    offset: -80,   // adjust if you have sticky navbar
+                    duration: 1.2,
+                    easing: (t) => 1 - Math.pow(1 - t, 4),
+                  });
+                }}
+                className="bg-neutral-900 hover:bg-neutral-950 shadow-lg shadow-neutral-900 border border-neutral-700 flex w-fit ml-auto gap-2 hover:gap-3 transition-all duration-200 ease-in-out text-white px-5 py-3 rounded-lg cursor-pointer font-semibold"
+              >
+                BOOK A TABLE <ArrowRight />
               </TimelineContent>
+
             </div>
           </div>
         </div>
