@@ -58,7 +58,7 @@ import StaggeredMenu from "../components/ui/staggerMenu";
 
 const menuItems = [
   { label: "Home", link: "#home" },
-  { label: "Menu", link: "#menu" },
+  { label: "Specials", link: "#menu" },
   { label: "Gallery", link: "#gallery" },
   { label: "Reserve", link: "#reservation" },
   { label: "About", link: "#about" },
