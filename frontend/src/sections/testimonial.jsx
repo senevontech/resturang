@@ -130,7 +130,7 @@ const testimonials = [
   {
     quote:
       "I was impressed by the food! And I could really tell that they use high-quality ingredients. The staff was friendly and attentive. I'll definitely be back for more!",
-    name: "Tamar Mendelson",
+    name: "dibapriya jana",
     designation: "Restaurant Critic",
     src:
       "https://images.unsplash.com/photo-1512316609839-ce289d3eba0a?q=80&w=1368&auto=format&fit=crop",
@@ -138,7 +138,7 @@ const testimonials = [
   {
     quote:
       "This place exceeded all expectations! The atmosphere is inviting, and the staff truly goes above and beyond. I'll keep returning for more exceptional dining experience.",
-    name: "Joe Charlescraft",
+    name: "Srijon Karmakar",
     designation: "Frequent Visitor",
     src:
       "https://images.unsplash.com/photo-1628749528992-f5702133b686?q=80&w=1368&auto=format&fit=crop",
@@ -146,7 +146,7 @@ const testimonials = [
   {
     quote:
       "Shining Yam is a hidden gem! The impeccable service and overall attention to detail created a memorable experience. I highly recommend it!",
-    name: "Martina Edelweist",
+    name: "Santu Pramanik",
     designation: "Satisfied Customer",
     src:
       "https://images.unsplash.com/photo-1524267213992-b76e8577d046?q=80&w=1368&auto=format&fit=crop",

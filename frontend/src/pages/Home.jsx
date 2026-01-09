@@ -23,8 +23,9 @@ export default function Home() {
       <FloatingActions />
 
       <div id="home"><Hero /></div>
-      <div id="HorizonMenu"><HorizonMenu /></div>
       <div id="menu"><Menu /></div>
+      <div id="HorizonMenu"><HorizonMenu /></div>
+      
       
       {/* <div id="gallery"><Gallery /></div> */}
       <div id="gallery"><GlobeGallery /></div>
