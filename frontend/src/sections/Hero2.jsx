@@ -1,25 +1,5 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // import React, { useEffect, useMemo, useRef, useState } from "react";
-// // import Antigravity from "../components/ui/AntiGravity";
 
 // export default function RestaurantHero() {
 //   const heroRef = useRef(null);
@@ -27,6 +7,9 @@
 //   const [vw, setVw] = useState(
 //     typeof window !== "undefined" ? window.innerWidth : 1200
 //   );
+
+//   // ✅ load animation trigger
+//   const [intro, setIntro] = useState(false);
 
 //   useEffect(() => {
 //     const onScroll = () => setScrollY(window.scrollY);
@@ -36,9 +19,16 @@
 //     window.addEventListener("scroll", onScroll, { passive: true });
 //     window.addEventListener("resize", onResize, { passive: true });
 
+//     // ✅ trigger enter animation after first paint
+//     const raf1 = requestAnimationFrame(() => {
+//       const raf2 = requestAnimationFrame(() => setIntro(true));
+//       return () => cancelAnimationFrame(raf2);
+//     });
+
 //     return () => {
 //       window.removeEventListener("scroll", onScroll);
 //       window.removeEventListener("resize", onResize);
+//       cancelAnimationFrame(raf1);
 //     };
 //   }, []);
 
@@ -63,6 +53,11 @@
 
 //   const dishBottom = useMemo(() => (isMobile ? "26%" : "26%"), [isMobile]);
 
+//   // ✅ intro dish sizing (reference-style)
+//   const sideDishSize = isMobile
+//     ? "w-[44vw] max-w-[220px]"
+//     : "w-[22rem] md:w-[26rem] lg:w-[28rem]";
+
 //   return (
 //     <div className="relative">
 //       <section
@@ -73,33 +68,74 @@
 //             "linear-gradient(135deg, #d4c5a0 0%, #c9b896 50%, #b8a882 100%)",
 //         }}
 //       >
-//         {/* ✅ Antigravity background layer (smaller + fewer + darker) */}
+//         {/* ✅ Antigravity background layer */}
 //         <div className="absolute inset-0 z-[0] pointer-events-none">
-//           {/* <Antigravity
-//             // dark olive / brown to match your warm background (NOT pure black)
-//             color="#52480fff"
-//             // fewer particles
-//             count={isMobile ? 105 : 200}
-//             // smaller particles
-//             particleSize={isMobile ? 0.65 : 0.85}
-//             // calmer motion
-//             magnetRadius={isMobile ? 6 : 8}
-//             ringRadius={isMobile ? 6 : 8}
-//             waveSpeed={0.35}
-//             waveAmplitude={0.55}
-//             lerpSpeed={0.08}
-//             particleVariance={0.8}
-//             rotationSpeed={0.05}
-//             depthFactor={0.75}
-//             pulseSpeed={2.2}
-//             particleShape="capsule"
-//             fieldStrength={12}
-//             autoAnimate
-//           /> */}
-
-//           {/* darker blend so particles sit subtle */}
 //           <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/15" />
 //           <div className="absolute inset-0 opacity-70 bg-[radial-gradient(900px_500px_at_50%_30%,rgba(255,255,255,0.12),transparent_70%)]" />
+//         </div>
+
+//         {/* ✅ NEW: Side dishes (glide + rotate on page load) */}
+//         <div
+//           className="pointer-events-none absolute inset-0 z-[9]"
+//           style={{ opacity: itemOpacity }}
+//         >
+//           {/* LEFT dish */}
+//           <div
+//             className={`absolute ${isMobile ? "left-[-22vw] top-[34%]" : "left-[-8rem] top-[35%]"} -translate-y-1/2`}
+//             style={{
+//               transform: `
+//                 translateY(-50%)
+//                 translateY(${tableParallax * 0.08}px)
+//                 translateX(${intro ? "0px" : isMobile ? "-120px" : "-220px"})
+//                 rotate(${intro ? "0deg" : "-24deg"})
+//               `,
+//               transition:
+//                 "transform 900ms cubic-bezier(.2,.9,.2,1), opacity 900ms cubic-bezier(.2,.9,.2,1)",
+//               opacity: intro ? 1 : 0,
+//               filter: "drop-shadow(0 24px 30px rgba(0,0,0,0.18))",
+//               willChange: "transform, opacity",
+//             }}
+//           >
+//             <img
+//               src="/images/dish1.png"
+//               alt="Signature Dish Left"
+//               loading="eager"
+//               decoding="async"
+//               width={700}
+//               height={700}
+//               className={`object-contain ${sideDishSize}`}
+//               draggable={false}
+//             />
+//           </div>
+
+//           {/* RIGHT dish */}
+//           <div
+//             className={`absolute ${isMobile ? "right-[-22vw] top-[34%]" : "right-[-8rem] top-[35%]"} -translate-y-1/2`}
+//             style={{
+//               transform: `
+//                 translateY(-50%)
+//                 translateY(${tableParallax * 0.08}px)
+//                 translateX(${intro ? "0px" : isMobile ? "120px" : "220px"})
+//                 rotate(${intro ? "0deg" : "24deg"})
+//               `,
+//               transition:
+//                 "transform 900ms cubic-bezier(.2,.9,.2,1), opacity 900ms cubic-bezier(.2,.9,.2,1)",
+//               opacity: intro ? 1 : 0,
+//               filter: "drop-shadow(0 24px 30px rgba(0,0,0,0.18))",
+//               willChange: "transform, opacity",
+//             }}
+//           >
+//             <img
+//               src="/images/dish2.png"
+//               alt="Signature Dish Right"
+//               loading="eager"
+//               decoding="async"
+//               width={700}
+//               height={700}
+//               className={`object-contain ${sideDishSize}`}
+//               draggable={false}
+//             />
+//           </div>
 //         </div>
 
 //         {/* Big watermark */}
@@ -381,64 +417,175 @@
 
 
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
+
+import dish1 from "../assets/images/dish1.png";
+import dish2 from "../assets/images/dish2.png";
+import chickenFry from "../assets/images/chicken-fry.png";
+import brocoli from "../assets/images/brocoli.png";
+import tableImg from "../assets/images/table.png";
+import pizzaImg from "../assets/images/pizza.png";
+import potatoImg from "../assets/images/potato.png";
+import chickenImg from "../assets/images/chicken.png";
+
+/**
+ * RestaurantHero Component
+ * 
+ * A high-performance, accessible hero section with parallax effects and entrance animations.
+ * Features:
+ * - Mobile-first responsive design
+ * - Optimized scroll and resize handlers with debouncing
+ * - Accessibility improvements (ARIA labels, reduced motion support)
+ * - Performance optimizations (memoization, will-change, passive listeners)
+ * - Clean separation of concerns
+ * 
+ * @component
+ */
 export default function RestaurantHero() {
+  // Refs
   const heroRef = useRef(null);
+  const scrollRAF = useRef(null);
+  const resizeTimeout = useRef(null);
+
+  // State
   const [scrollY, setScrollY] = useState(0);
   const [vw, setVw] = useState(
     typeof window !== "undefined" ? window.innerWidth : 1200
   );
+  const [introComplete, setIntroComplete] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
-  // ✅ load animation trigger
-  const [intro, setIntro] = useState(false);
-
+  // Check for reduced motion preference
   useEffect(() => {
-    const onScroll = () => setScrollY(window.scrollY);
-    const onResize = () =>
-      setVw(typeof window !== "undefined" ? window.innerWidth : 1200);
+    if (typeof window === "undefined") return;
+    
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setPrefersReducedMotion(mediaQuery.matches);
 
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onResize, { passive: true });
+    const handleChange = (e) => setPrefersReducedMotion(e.matches);
+    mediaQuery.addEventListener("change", handleChange);
+    
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
 
-    // ✅ trigger enter animation after first paint
+  // Optimized scroll handler with RAF
+  const handleScroll = useCallback(() => {
+    if (scrollRAF.current) return;
+    
+    scrollRAF.current = requestAnimationFrame(() => {
+      setScrollY(window.scrollY);
+      scrollRAF.current = null;
+    });
+  }, []);
+
+  // Debounced resize handler
+  const handleResize = useCallback(() => {
+    if (resizeTimeout.current) {
+      clearTimeout(resizeTimeout.current);
+    }
+    
+    resizeTimeout.current = setTimeout(() => {
+      setVw(window.innerWidth);
+    }, 150);
+  }, []);
+
+  // Setup event listeners and intro animation
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleResize, { passive: true });
+
+    // Trigger intro animation after first paint
     const raf1 = requestAnimationFrame(() => {
-      const raf2 = requestAnimationFrame(() => setIntro(true));
+      const raf2 = requestAnimationFrame(() => {
+        setIntroComplete(true);
+      });
       return () => cancelAnimationFrame(raf2);
     });
 
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onResize);
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+      if (scrollRAF.current) cancelAnimationFrame(scrollRAF.current);
+      if (resizeTimeout.current) clearTimeout(resizeTimeout.current);
       cancelAnimationFrame(raf1);
     };
-  }, []);
+  }, [handleScroll, handleResize]);
 
-  const isMobile = vw < 768;
+  // Memoized breakpoint and calculations
+  const isMobile = useMemo(() => vw < 768, [vw]);
+  const isTablet = useMemo(() => vw >= 768 && vw < 1024, [vw]);
 
-  const heroHeight = isMobile ? 650 : 900;
-  const scrollProgress = Math.min(scrollY / heroHeight, 1);
+  // Memoized scroll calculations
+  const scrollMetrics = useMemo(() => {
+    const heroHeight = isMobile ? 650 : 900;
+    const progress = Math.min(Math.max(scrollY / heroHeight, 0), 1);
+    
+    // Disable parallax if reduced motion is preferred
+    const motionMultiplier = prefersReducedMotion ? 0 : 1;
+    
+    return {
+      progress,
+      bgParallax: scrollY * (isMobile ? 0.18 : 0.5) * motionMultiplier,
+      textParallax: scrollY * (isMobile ? 0.12 : 0.3) * motionMultiplier,
+      tableParallax: scrollY * (isMobile ? 0.16 : 0.4) * motionMultiplier,
+      chickenFly: scrollY * (isMobile ? -0.22 : -0.8) * motionMultiplier,
+      broccoliFly: scrollY * (isMobile ? -0.2 : -0.7) * motionMultiplier,
+      dishFly: scrollY * (isMobile ? -0.12 : -0.5) * motionMultiplier,
+      itemOpacity: Math.max(1 - progress * (isMobile ? 1.15 : 1.5), 0),
+      rotationAmount: progress * (isMobile ? 45 : 180) * motionMultiplier,
+    };
+  }, [scrollY, isMobile, prefersReducedMotion]);
 
-  const bgParallax = scrollY * (isMobile ? 0.18 : 0.5);
-  const textParallax = scrollY * (isMobile ? 0.12 : 0.3);
-  const tableParallax = scrollY * (isMobile ? 0.16 : 0.4);
+  // Responsive sizing
+  const sizing = useMemo(() => ({
+    dishBottom: "26%",
+    sideDishSize: isMobile
+      ? "w-[44vw] max-w-[220px]"
+      : "w-[22rem] md:w-[26rem] lg:w-[28rem]",
+    flyingItemSize: isMobile
+      ? "w-[48vw] max-w-[260px]"
+      : "w-44 h-44 md:w-[30rem] md:h-[30rem]",
+    pizzaSize: isMobile ? "w-[22vw] max-w-[110px]" : "w-32 md:w-40",
+    potatoSize: isMobile ? "w-[26vw] max-w-[130px]" : "w-36 md:w-44",
+    chickenSize: isMobile ? "w-[22vw] max-w-[110px]" : "w-32 md:w-40",
+  }), [isMobile]);
 
-  const chickenFly = scrollY * (isMobile ? -0.22 : -0.8);
-  const broccoliFly = scrollY * (isMobile ? -0.2 : -0.7);
-  const dishFly = scrollY * (isMobile ? -0.12 : -0.5);
-
-  const itemOpacity = Math.max(
-    1 - scrollProgress * (isMobile ? 1.15 : 1.5),
-    0
-  );
-  const rotationAmount = scrollProgress * (isMobile ? 45 : 180);
-
-  const dishBottom = useMemo(() => (isMobile ? "26%" : "26%"), [isMobile]);
-
-  // ✅ intro dish sizing (reference-style)
-  const sideDishSize = isMobile
-    ? "w-[44vw] max-w-[220px]"
-    : "w-[22rem] md:w-[26rem] lg:w-[28rem]";
+  // Animation transition timing
+  const introTransition = prefersReducedMotion
+    ? "none"
+    : "transform 900ms cubic-bezier(.2,.9,.2,1), opacity 900ms cubic-bezier(.2,.9,.2,1)";
 
   return (
     <div className="relative">
@@ -449,116 +596,127 @@ export default function RestaurantHero() {
           background:
             "linear-gradient(135deg, #d4c5a0 0%, #c9b896 50%, #b8a882 100%)",
         }}
+        aria-label="Restaurant hero section"
       >
-        {/* ✅ Antigravity background layer */}
-        <div className="absolute inset-0 z-[0] pointer-events-none">
+        {/* Background layers */}
+        <div 
+          className="absolute inset-0 z-[0] pointer-events-none" 
+          aria-hidden="true"
+        >
           <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/15" />
           <div className="absolute inset-0 opacity-70 bg-[radial-gradient(900px_500px_at_50%_30%,rgba(255,255,255,0.12),transparent_70%)]" />
         </div>
 
-        {/* ✅ NEW: Side dishes (glide + rotate on page load) */}
+        {/* Side dishes with entrance animation */}
         <div
           className="pointer-events-none absolute inset-0 z-[9]"
-          style={{ opacity: itemOpacity }}
+          style={{ opacity: scrollMetrics.itemOpacity }}
+          aria-hidden="true"
         >
-          {/* LEFT dish */}
+          {/* Left dish */}
           <div
-            className={`absolute ${isMobile ? "left-[-22vw] top-[34%]" : "left-[-8rem] top-[35%]"} -translate-y-1/2`}
+            className={`absolute ${
+              isMobile ? "left-[-22vw] top-[34%]" : "left-[-8rem] top-[35%]"
+            } -translate-y-1/2`}
             style={{
               transform: `
                 translateY(-50%)
-                translateY(${tableParallax * 0.08}px)
-                translateX(${intro ? "0px" : isMobile ? "-120px" : "-220px"})
-                rotate(${intro ? "0deg" : "-24deg"})
+                translateY(${scrollMetrics.tableParallax * 0.08}px)
+                translateX(${introComplete ? "0px" : isMobile ? "-120px" : "-220px"})
+                rotate(${introComplete ? "0deg" : "-24deg"})
               `,
-              transition:
-                "transform 900ms cubic-bezier(.2,.9,.2,1), opacity 900ms cubic-bezier(.2,.9,.2,1)",
-              opacity: intro ? 1 : 0,
+              transition: introTransition,
+              opacity: introComplete ? 1 : 0,
               filter: "drop-shadow(0 24px 30px rgba(0,0,0,0.18))",
-              willChange: "transform, opacity",
+              willChange: scrollY < 900 ? "transform, opacity" : "auto",
             }}
           >
             <img
-              src="/images/dish1.png"
-              alt="Signature Dish Left"
+              src={dish1}
+              alt=""
+              role="presentation"
               loading="eager"
               decoding="async"
               width={700}
               height={700}
-              className={`object-contain ${sideDishSize}`}
+              className={`object-contain ${sizing.sideDishSize}`}
               draggable={false}
             />
           </div>
 
-          {/* RIGHT dish */}
+          {/* Right dish */}
           <div
-            className={`absolute ${isMobile ? "right-[-22vw] top-[34%]" : "right-[-8rem] top-[35%]"} -translate-y-1/2`}
+            className={`absolute ${
+              isMobile ? "right-[-22vw] top-[34%]" : "right-[-8rem] top-[35%]"
+            } -translate-y-1/2`}
             style={{
               transform: `
                 translateY(-50%)
-                translateY(${tableParallax * 0.08}px)
-                translateX(${intro ? "0px" : isMobile ? "120px" : "220px"})
-                rotate(${intro ? "0deg" : "24deg"})
+                translateY(${scrollMetrics.tableParallax * 0.08}px)
+                translateX(${introComplete ? "0px" : isMobile ? "120px" : "220px"})
+                rotate(${introComplete ? "0deg" : "24deg"})
               `,
-              transition:
-                "transform 900ms cubic-bezier(.2,.9,.2,1), opacity 900ms cubic-bezier(.2,.9,.2,1)",
-              opacity: intro ? 1 : 0,
+              transition: introTransition,
+              opacity: introComplete ? 1 : 0,
               filter: "drop-shadow(0 24px 30px rgba(0,0,0,0.18))",
-              willChange: "transform, opacity",
+              willChange: scrollY < 900 ? "transform, opacity" : "auto",
             }}
           >
             <img
-              src="/images/dish2.png"
-              alt="Signature Dish Right"
+              src={dish2}
+              alt=""
+              role="presentation"
               loading="eager"
               decoding="async"
               width={700}
               height={700}
-              className={`object-contain ${sideDishSize}`}
+              className={`object-contain ${sizing.sideDishSize}`}
               draggable={false}
             />
           </div>
         </div>
 
-        {/* Big watermark */}
+        {/* Large watermark background text */}
         <div
           className="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none z-[1]"
           style={{
-            transform: `translateY(${bgParallax}px)`,
-            opacity: itemOpacity,
+            transform: `translateY(${scrollMetrics.bgParallax}px)`,
+            opacity: scrollMetrics.itemOpacity,
           }}
+          aria-hidden="true"
         >
-          <h1
+          <h2
             className="font-black tracking-tighter opacity-10 select-none whitespace-nowrap"
             style={{
-              fontFamily: "surg",
+              fontFamily: "surg, sans-serif",
               fontSize: "clamp(10rem, 28vw, 28rem)",
               color: "#8b7d5c",
               textTransform: "lowercase",
             }}
           >
             restorang
-          </h1>
+          </h2>
         </div>
 
+        {/* Main content */}
         <div className="relative z-10 w-full">
-          {/* TEXT */}
+          {/* Hero text */}
           <div
             className="w-full px-4 sm:px-8 pt-16 sm:pt-24"
             style={{
-              transform: `translateY(${textParallax}px)`,
-              opacity: itemOpacity,
+              transform: `translateY(${scrollMetrics.textParallax}px)`,
+              opacity: scrollMetrics.itemOpacity,
             }}
           >
             <div className="max-w-5xl mx-auto text-center">
               <h1
                 className="font-black tracking-tight"
                 style={{
-                  fontFamily: "surg",
+                  fontFamily: "surg, sans-serif",
                   fontSize: "clamp(3.2rem, 10vw, 14rem)",
                   color: "#5a4a2f",
                   textShadow: "2px 2px 4px rgba(0,0,0,0.1)",
-                  animation: "fadeInDown 1s ease-out",
+                  animation: prefersReducedMotion ? "none" : "fadeInDown 1s ease-out",
                 }}
               >
                 Restorang
@@ -567,9 +725,9 @@ export default function RestaurantHero() {
               <p
                 className="mt-3 sm:mt-4 text-base sm:text-2xl"
                 style={{
-                  fontFamily: "surg",
+                  fontFamily: "surg, sans-serif",
                   color: "#6b5940",
-                  animation: "fadeIn 1.5s ease-out",
+                  animation: prefersReducedMotion ? "none" : "fadeIn 1.5s ease-out",
                 }}
               >
                 Classic India, Chinese, Continental Dine In
@@ -578,9 +736,9 @@ export default function RestaurantHero() {
               <p
                 className="mt-3 sm:mt-4 text-sm sm:text-lg max-w-md sm:max-w-2xl mx-auto"
                 style={{
-                  fontFamily: "surg",
-                  color: "#7a6a4f",
-                  animation: "fadeIn 2s ease-out",
+                  fontFamily: "surg, sans-serif",
+                  color: "#ffffffff",
+                  animation: prefersReducedMotion ? "none" : "fadeIn 2s ease-out",
                 }}
               >
                 Experience a culinary journey where traditional flavors meet
@@ -590,149 +748,149 @@ export default function RestaurantHero() {
             </div>
           </div>
 
-          {/* SCENE */}
+          {/* Food scene */}
           <div
             className="relative w-full"
             style={{
-              transform: `translateY(${tableParallax}px)`,
-              opacity: itemOpacity,
+              transform: `translateY(${scrollMetrics.tableParallax}px)`,
+              opacity: scrollMetrics.itemOpacity,
             }}
           >
             <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-8">
               <div className="relative h-[62svh] min-h-[520px]">
-                {/* CHICKEN */}
+                
+                {/* Flying chicken */}
                 <div
-                  className={`
-                    pointer-events-none absolute z-20
-                    ${isMobile ? "left-0 top-[18%]" : "-left-32 md:-left-56 top-3/3"}
-                    -translate-y-1/2
-                  `}
+                  className={`pointer-events-none absolute z-20 ${
+                    isMobile
+                      ? "left-0 top-[18%]"
+                      : "-left-32 md:-left-56 top-3/3"
+                  } -translate-y-1/2`}
                   style={{
                     transform: isMobile
-                      ? `translateY(${chickenFly}px) translateX(${chickenFly * 0.15}px) rotate(${rotationAmount}deg)`
-                      : `translateY(${chickenFly}px) translateX(${chickenFly * 0.5}px) rotate(${rotationAmount}deg)`,
+                      ? `translateY(${scrollMetrics.chickenFly}px) translateX(${
+                          scrollMetrics.chickenFly * 0.15
+                        }px) rotate(${scrollMetrics.rotationAmount}deg)`
+                      : `translateY(${scrollMetrics.chickenFly}px) translateX(${
+                          scrollMetrics.chickenFly * 0.5
+                        }px) rotate(${scrollMetrics.rotationAmount}deg)`,
+                    willChange: scrollY < 900 ? "transform" : "auto",
                   }}
+                  aria-hidden="true"
                 >
                   <img
-                    src="/images/chicken-fry.png"
-                    alt="Fried Chicken"
+                    src={chickenFry}
+                    alt=""
+                    role="presentation"
                     loading="eager"
                     decoding="async"
-                    fetchPriority="high"
+                    fetchpriority="high"
                     width={600}
                     height={600}
-                    className={`
-                      object-contain drop-shadow-2xl
-                      ${isMobile ? "w-[48vw] max-w-[260px]" : "w-44 h-44 md:w-[30rem] md:h-[30rem]"}
-                    `}
+                    className={`object-contain drop-shadow-2xl ${sizing.flyingItemSize}`}
                     draggable={false}
                   />
                 </div>
 
-                {/* BROCCOLI */}
+                {/* Flying broccoli */}
                 <div
-                  className={`
-                    pointer-events-none absolute z-20
-                    ${isMobile ? "right-0 top-[18%]" : "-right-32 md:-right-56 top-3/3"}
-                    -translate-y-1/2
-                  `}
+                  className={`pointer-events-none absolute z-20 ${
+                    isMobile
+                      ? "right-0 top-[18%]"
+                      : "-right-32 md:-right-56 top-3/3"
+                  } -translate-y-1/2`}
                   style={{
                     transform: isMobile
-                      ? `translateY(${broccoliFly}px) translateX(${-broccoliFly * 0.15}px) rotate(${-rotationAmount}deg)`
-                      : `translateY(${broccoliFly}px) translateX(${-broccoliFly * 0.5}px) rotate(${-rotationAmount}deg)`,
+                      ? `translateY(${scrollMetrics.broccoliFly}px) translateX(${
+                          -scrollMetrics.broccoliFly * 0.15
+                        }px) rotate(${-scrollMetrics.rotationAmount}deg)`
+                      : `translateY(${scrollMetrics.broccoliFly}px) translateX(${
+                          -scrollMetrics.broccoliFly * 0.5
+                        }px) rotate(${-scrollMetrics.rotationAmount}deg)`,
+                    willChange: scrollY < 900 ? "transform" : "auto",
                   }}
+                  aria-hidden="true"
                 >
                   <img
-                    src="/images/brocoli.png"
-                    alt="Broccoli"
+                    src={brocoli}
+                    alt=""
+                    role="presentation"
                     loading="eager"
                     decoding="async"
-                    fetchPriority="high"
+                    fetchpriority="high"
                     width={600}
                     height={600}
-                    className={`
-                      object-contain drop-shadow-2xl
-                      ${isMobile ? "w-[48vw] max-w-[260px]" : "w-44 h-44 md:w-[30rem] md:h-[30rem]"}
-                    `}
+                    className={`object-contain drop-shadow-2xl ${sizing.flyingItemSize}`}
                     draggable={false}
                   />
                 </div>
 
-                {/* TABLE */}
+                {/* Table with dishes */}
                 <div
-                  className={`
-                    absolute left-1/2 -translate-x-1/2 w-full
-                    ${isMobile ? "max-w-[620px]" : "max-w-4xl"}
-                    bottom-8 sm:bottom-10 md:bottom-32
-                  `}
+                  className={`absolute left-1/2 -translate-x-1/2 w-full ${
+                    isMobile ? "max-w-[620px]" : "max-w-4xl"
+                  } bottom-8 sm:bottom-10 md:bottom-32`}
                   style={{
-                    transform: `translateY(${dishFly * 0.3}px) translateX(-50%)`,
+                    transform: `translateY(${
+                      scrollMetrics.dishFly * 0.3
+                    }px) translateX(-50%)`,
+                    willChange: scrollY < 900 ? "transform" : "auto",
                   }}
                 >
                   <img
-                    src="/images/table.png"
-                    alt="Wooden Table"
+                    src={tableImg}
+                    alt="Wooden dining table"
                     loading="eager"
                     decoding="async"
-                    fetchPriority="high"
+                    fetchpriority="high"
                     width={1200}
                     height={600}
                     className="w-full object-contain drop-shadow-2xl pointer-events-none"
                     draggable={false}
                   />
 
-                  {/* DISHES */}
+                  {/* Dishes on table */}
                   <div
-                    className={`
-                      absolute left-1/2 -translate-x-1/2 flex items-end justify-center gap-6 md:gap-8 pointer-events-none
-                      ${isMobile ? "gap-6" : "gap-8 md:gap-6"}
-                    `}
+                    className={`absolute left-1/2 -translate-x-1/2 flex items-end justify-center pointer-events-none ${
+                      isMobile ? "gap-6" : "gap-8 md:gap-6"
+                    }`}
                     style={{
-                      bottom: dishBottom,
+                      bottom: sizing.dishBottom,
                       width: "100%",
                       maxWidth: isMobile ? "560px" : "900px",
                     }}
                   >
                     <img
-                      src="/images/pizza.png"
-                      alt="Pizza"
+                      src={pizzaImg}
+                      alt="Pizza dish"
                       loading="eager"
                       decoding="async"
                       width={300}
                       height={300}
-                      className={`
-                        object-contain drop-shadow-xl
-                        ${isMobile ? "w-[22vw] max-w-[110px]" : "w-32 md:w-40"}
-                      `}
+                      className={`object-contain drop-shadow-xl ${sizing.pizzaSize}`}
                       draggable={false}
                     />
 
                     <img
-                      src="/images/potato.png"
-                      alt="Potato"
+                      src={potatoImg}
+                      alt="Potato dish"
                       loading="eager"
                       decoding="async"
                       width={320}
                       height={320}
-                      className={`
-                        object-contain drop-shadow-xl
-                        ${isMobile ? "w-[26vw] max-w-[130px]" : "w-36 md:w-44"}
-                      `}
+                      className={`object-contain drop-shadow-xl ${sizing.potatoSize}`}
                       draggable={false}
                       style={{ marginBottom: isMobile ? 2 : 4 }}
                     />
 
                     <img
-                      src="/images/chicken.png"
-                      alt="Chicken"
+                      src={chickenImg}
+                      alt="Chicken dish"
                       loading="eager"
                       decoding="async"
                       width={300}
                       height={300}
-                      className={`
-                        object-contain drop-shadow-xl
-                        ${isMobile ? "w-[22vw] max-w-[110px]" : "w-32 md:w-40"}
-                      `}
+                      className={`object-contain drop-shadow-xl ${sizing.chickenSize}`}
                       draggable={false}
                     />
                   </div>
@@ -740,10 +898,14 @@ export default function RestaurantHero() {
               </div>
             </div>
 
-            {/* Scroll Indicator */}
+            {/* Scroll indicator */}
             <div
-              className="absolute left-1/2 -translate-x-1/2 bottom-6 sm:bottom-12 animate-bounce"
-              style={{ opacity: itemOpacity }}
+              className="absolute left-1/2 -translate-x-1/2 bottom-6 sm:bottom-12"
+              style={{
+                opacity: scrollMetrics.itemOpacity,
+                animation: prefersReducedMotion ? "none" : "bounce 2s infinite",
+              }}
+              aria-hidden="true"
             >
               <div className="flex flex-col items-center gap-2 pointer-events-none">
                 <svg
@@ -753,6 +915,7 @@ export default function RestaurantHero() {
                   fill="none"
                   stroke="#7a6a4f"
                   strokeWidth="2"
+                  aria-label="Scroll down"
                 >
                   <path d="M12 5v14M19 12l-7 7-7-7" />
                 </svg>
@@ -761,37 +924,59 @@ export default function RestaurantHero() {
           </div>
         </div>
 
+        {/* Keyframe animations */}
         <style>{`
           @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { 
+              opacity: 0; 
+              transform: translateY(20px); 
+            }
+            to { 
+              opacity: 1; 
+              transform: translateY(0); 
+            }
           }
+          
           @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { 
+              opacity: 0; 
+              transform: translateY(-30px); 
+            }
+            to { 
+              opacity: 1; 
+              transform: translateY(0); 
+            }
           }
-          body { margin: 0; overflow-x: hidden; }
+          
+          @keyframes bounce {
+            0%, 100% { 
+              transform: translateY(0) translateX(-50%); 
+            }
+            50% { 
+              transform: translateY(-10px) translateX(-50%); 
+            }
+          }
+          
+          /* Respect reduced motion preference */
+          @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+              animation-duration: 0.01ms !important;
+              animation-iteration-count: 1 !important;
+              transition-duration: 0.01ms !important;
+            }
+          }
+          
+          body { 
+            margin: 0; 
+            overflow-x: hidden; 
+          }
         `}</style>
       </section>
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

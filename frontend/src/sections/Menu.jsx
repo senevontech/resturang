@@ -316,28 +316,38 @@ import React from "react";
 import InteractiveDotsBg from "../components/ui/interactive-dots";
 import InfiniteMenu from "../components/ui/infiniteMenu";
 
+// images 
+import Img1 from "../assets/images/img1.jpg";
+import Img2 from "../assets/images/img2.jpg";
+import Img3 from "../assets/images/img3.jpg";
+import Img4 from "../assets/images/img4.jpg";
+
 const demoItems = [
   {
     link: "/menus",
-    image: "/images/img1.jpg",
+    // image: "/images/img1.jpg",
+    image: Img1,
     title: "Indian Classics",
     description: "Authentic spices • signature curries",
   },
   {
     link: "/menus",
-    image: "/images/img2.jpg",
+    // image: "/images/img2.jpg",
+    image: Img2,
     title: "Chinese Delights",
     description: "Wok-tossed flavors • sizzling plates",
   },
   {
     link: "/menus",
-    image: "/images/img3.jpg",
+    // image: "/images/img3.jpg",
+    image: Img3,
     title: "Continental Favorites",
     description: "Comfort classics • chef specials",
   },
   {
     link: "/menus",
-    image: "/images/img4.jpg",
+    // image: "/images/img4.jpg",
+    image: Img4,
     title: "Desserts & Drinks",
     description: "Sweet endings • refreshing sips",
   },

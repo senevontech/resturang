@@ -3,12 +3,14 @@
 import Hero from "../sections/Hero2";
 import Menu from "../sections/Menu";
 import HorizonMenu from "../sections/MenuHorizontal";
-import Gallery from "../sections/Gallery";
+// import Gallery from "../sections/Gallery";
 import Reservation from "../sections/Reservation";
 import About from "../sections/about";
 import Footer from "../sections/footer";
 import MenuOverlay from "../sections/MenuOverlay";
 import Map from "../sections/Map";
+import GlobeGallery from "../sections/globe-gallery";
+import Testimonial from "../sections/testimonial";
 
 import FloatingActions from "../components/floatingButton";
 // import LazySection from "../components/LazySection";
@@ -24,10 +26,12 @@ export default function Home() {
       <div id="HorizonMenu"><HorizonMenu /></div>
       <div id="menu"><Menu /></div>
       
-      <div id="gallery"><Gallery /></div>
+      {/* <div id="gallery"><Gallery /></div> */}
+      <div id="gallery"><GlobeGallery /></div>
       <div id="reservation"><Reservation /></div>
       
       <div id="about"><About /></div>
+      <div id="testimonial"> <Testimonial /></div>
       <div id="Map"> <Map /></div>
       <div id="footer"><Footer /></div>
 
