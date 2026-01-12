@@ -1,286 +1,280 @@
-"use client";
+"use client"
 
-import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useState, useEffect, useRef } from "react"
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion"
 
-/**
- * CircularTestimonials (JSX)
- * - Mobile-first Tailwind layout
- * - No style-jsx (works in Vite + Next)
- * - Uses lucide-react icons (shadcn standard)
- */
+const testimonials = [
+  {
+    quote: "Absolutely loved the food — every dish tasted fresh and perfectly seasoned. The butter chicken was unreal!",
+    author: "Srijon Karmakar",
+    role: "Local Guide • 120 reviews",
+    company: "Dine-in • 5⭐",
+  },
+  {
+    quote: "Service was quick, staff were polite, and the ambience felt premium. Great spot for family dinners.",
+    author: "Santu Pramanik",
+    role: "Food Blogger • 48 reviews",
+    company: "Dinner • 4.8⭐",
+  },
+  {
+    quote: "Best biryani in town. Big portions, great value, and the desserts were surprisingly good too.",
+    author: "Dibba priya Jana",
+    role: "Verified Customer • 32 reviews",
+    company: "Takeaway • 5⭐",
+  },
+  {
+    quote: "Good Food, very gooood haser dimer jhol...., prices are liitle higher for haser dim. yum yum.",
+    author: "Tushar Abdul Mondal",
+    role: "Verified Customer • 32 reviews",
+    company: "Takeaway • 5⭐",
+  },
+]
 
-function calculateGap(width) {
-  const minWidth = 1024;
-  const maxWidth = 1456;
-  const minGap = 60;
-  const maxGap = 86;
 
-  if (width <= minWidth) return minGap;
-  if (width >= maxWidth) return Math.max(minGap, maxGap + 0.06018 * (width - maxWidth));
-  return minGap + (maxGap - minGap) * ((width - minWidth) / (maxWidth - minWidth));
-}
+export function Testimonial() {
+  const [activeIndex, setActiveIndex] = useState(0)
+  const containerRef = useRef(null)
 
-export function CircularTestimonials({
-  testimonials,
-  autoplay = true,
-  colors = {},
-  fontSizes = {},
-}) {
-  // Colors
-  const colorName = colors.name ?? "#000";
-  const colorDesignation = colors.designation ?? "#6b7280";
-  const colorTestimony = colors.testimony ?? "#4b5563";
-  const colorArrowBg = colors.arrowBackground ?? "#141414";
-  const colorArrowFg = colors.arrowForeground ?? "#f1f1f7";
-  const colorArrowHoverBg = colors.arrowHoverBackground ?? "#00a6fb";
+  // Mouse position for magnetic effect
+  const mouseX = useMotionValue(0)
+  const mouseY = useMotionValue(0)
 
-  // Font sizes
-  const fontSizeName = fontSizes.name ?? "1.5rem";
-  const fontSizeDesignation = fontSizes.designation ?? "0.925rem";
-  const fontSizeQuote = fontSizes.quote ?? "1.125rem";
+  const springConfig = { damping: 25, stiffness: 200 }
+  const x = useSpring(mouseX, springConfig)
+  const y = useSpring(mouseY, springConfig)
 
-  // State
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [hoverPrev, setHoverPrev] = useState(false);
-  const [hoverNext, setHoverNext] = useState(false);
-  const [containerWidth, setContainerWidth] = useState(1200);
+  // Transform for parallax on the large number
+  const numberX = useTransform(x, [-200, 200], [-20, 20])
+  const numberY = useTransform(y, [-200, 200], [-10, 10])
 
-  const imageContainerRef = useRef(null);
-  const autoplayIntervalRef = useRef(null);
-
-  const testimonialsLength = useMemo(() => testimonials?.length || 0, [testimonials]);
-  const activeTestimonial = useMemo(
-    () => (testimonialsLength ? testimonials[activeIndex] : null),
-    [activeIndex, testimonials, testimonialsLength]
-  );
-
-  // Resize observer (simple window resize)
-  useEffect(() => {
-    function handleResize() {
-      if (imageContainerRef.current) {
-        setContainerWidth(imageContainerRef.current.offsetWidth);
-      }
+  const handleMouseMove = (e) => {
+    const rect = containerRef.current?.getBoundingClientRect()
+    if (rect) {
+      const centerX = rect.left + rect.width / 2
+      const centerY = rect.top + rect.height / 2
+      mouseX.set(e.clientX - centerX)
+      mouseY.set(e.clientY - centerY)
     }
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  const clearAutoplay = useCallback(() => {
-    if (autoplayIntervalRef.current) {
-      clearInterval(autoplayIntervalRef.current);
-      autoplayIntervalRef.current = null;
-    }
-  }, []);
-
-  const handleNext = useCallback(() => {
-    if (!testimonialsLength) return;
-    setActiveIndex((prev) => (prev + 1) % testimonialsLength);
-    clearAutoplay();
-  }, [testimonialsLength, clearAutoplay]);
-
-  const handlePrev = useCallback(() => {
-    if (!testimonialsLength) return;
-    setActiveIndex((prev) => (prev - 1 + testimonialsLength) % testimonialsLength);
-    clearAutoplay();
-  }, [testimonialsLength, clearAutoplay]);
-
-  // Autoplay
-  useEffect(() => {
-    clearAutoplay();
-    if (!autoplay || !testimonialsLength) return;
-
-    autoplayIntervalRef.current = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % testimonialsLength);
-    }, 5000);
-
-    return () => clearAutoplay();
-  }, [autoplay, testimonialsLength, clearAutoplay]);
-
-  // Keyboard navigation
-  useEffect(() => {
-    const onKey = (e) => {
-      if (e.key === "ArrowLeft") handlePrev();
-      if (e.key === "ArrowRight") handleNext();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [handlePrev, handleNext]);
-
-  // Compute transforms for each image (show only left/center/right)
-  const getImageStyle = useCallback(
-    (index) => {
-      const gap = calculateGap(containerWidth);
-      const maxStickUp = gap * 0.8;
-
-      const isActive = index === activeIndex;
-      const isLeft = (activeIndex - 1 + testimonialsLength) % testimonialsLength === index;
-      const isRight = (activeIndex + 1) % testimonialsLength === index;
-
-      if (isActive) {
-        return {
-          zIndex: 3,
-          opacity: 1,
-          pointerEvents: "auto",
-          transform: `translateX(0px) translateY(0px) scale(1) rotateY(0deg)`,
-          transition: "all 0.8s cubic-bezier(.4,2,.3,1)",
-        };
-      }
-
-      if (isLeft) {
-        return {
-          zIndex: 2,
-          opacity: 1,
-          pointerEvents: "auto",
-          transform: `translateX(-${gap}px) translateY(-${maxStickUp}px) scale(0.85) rotateY(15deg)`,
-          transition: "all 0.8s cubic-bezier(.4,2,.3,1)",
-        };
-      }
-
-      if (isRight) {
-        return {
-          zIndex: 2,
-          opacity: 1,
-          pointerEvents: "auto",
-          transform: `translateX(${gap}px) translateY(-${maxStickUp}px) scale(0.85) rotateY(-15deg)`,
-          transition: "all 0.8s cubic-bezier(.4,2,.3,1)",
-        };
-      }
-
-      return {
-        zIndex: 1,
-        opacity: 0,
-        pointerEvents: "none",
-        transition: "all 0.8s cubic-bezier(.4,2,.3,1)",
-      };
-    },
-    [activeIndex, containerWidth, testimonialsLength]
-  );
-
-  const quoteVariants = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: -20 },
-  };
-
-  if (!testimonialsLength) {
-    return (
-      <div className="w-full max-w-3xl rounded-2xl border border-black/10 bg-white p-6 text-sm text-black/60">
-        No testimonials provided.
-      </div>
-    );
   }
 
+  const goNext = () => setActiveIndex((prev) => (prev + 1) % testimonials.length)
+  const goPrev = () => setActiveIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length)
+
+  useEffect(() => {
+    const timer = setInterval(goNext, 6000)
+    return () => clearInterval(timer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const current = testimonials[activeIndex]
+
   return (
-    <div className="w-full max-w-3xl p-4 sm:p-6 md:p-8">
-      <div className="grid gap-10 md:grid-cols-2 md:gap-20">
-        {/* Images */}
-        <div
-          ref={imageContainerRef}
-        //   className="relative h-72 w-full sm:h-80 md:h-96"
-        className="relative h-60 w-full sm:h-80 md:h-96"
-
-          style={{ perspective: 1000 }}
+    <div className="flex items-center justify-center min-h-screen bg-background overflow-hidden">
+      <div ref={containerRef} className="relative w-full max-w-5xl" onMouseMove={handleMouseMove}>
+        
+        {/* Oversized index number – static, no cursor effect */}
+        <motion.div
+          className="
+    absolute -left-8 top-1/2 -translate-y-1/2
+    text-[18rem] font-bold
+    opacity-20
+    select-none pointer-events-none
+    leading-none tracking-tighter
+  "
         >
-          {testimonials.map((t, index) => (
-            <img
-              key={`${t.src}-${index}`}
-              src={t.src}
-              alt={t.name}
-              className="absolute inset-0 h-full w-full rounded-3xl object-cover shadow-[0_10px_30px_rgba(0,0,0,0.2)]"
-              style={getImageStyle(index)}
-              loading="lazy"
-              draggable={false}
-              onClick={() => setActiveIndex(index)}
-            />
-          ))}
-        </div>
-
-        {/* Content */}
-        <div className="flex flex-col justify-between">
           <AnimatePresence mode="wait">
-            <motion.div
+            <motion.span
               key={activeIndex}
-              variants={quoteVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              transition={{ duration: 0.3, ease: "easeInOut" }}
+              initial={{ opacity: 0, scale: 0.8, filter: "blur(10px)" }}
+              animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+              exit={{ opacity: 0, scale: 1.1, filter: "blur(10px)" }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              className="block"
             >
-              <h3
-                className="font-bold"
-                style={{ color: colorName, fontSize: fontSizeName }}
-              >
-                {activeTestimonial.name}
-              </h3>
+              {String(activeIndex + 1).padStart(2, "0")}
+            </motion.span>
+          </AnimatePresence>
+        </motion.div>
 
-              <p
-                className="mt-1"
-                style={{ color: colorDesignation, fontSize: fontSizeDesignation }}
-              >
-                {activeTestimonial.designation}
-              </p>
 
-              <motion.p
-                className="mt-6 leading-relaxed"
-                style={{ color: colorTestimony, fontSize: fontSizeQuote }}
+        {/* Main content - asymmetric layout */}
+        <div className="relative flex">
+          {/* Left column - vertical text */}
+          <div className="flex flex-col items-center justify-center pr-16 border-r border-border">
+            <motion.span
+              className="text-xs font-mono text-muted-foreground tracking-widest uppercase"
+              style={{ writingMode: "vertical-rl", textOrientation: "mixed" }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              Reviews
+            </motion.span>
+
+            {/* Vertical progress line */}
+            <div className="relative h-32 w-px bg-border mt-8">
+              <motion.div
+                className="absolute top-0 left-0 w-full bg-foreground origin-top"
+                animate={{
+                  height: `${((activeIndex + 1) / testimonials.length) * 100}%`,
+                }}
+                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              />
+            </div>
+          </div>
+
+          {/* Center - main content */}
+          <div className="flex-1 pl-16 py-12">
+            {/* Company badge */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeIndex}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                transition={{ duration: 0.4 }}
+                className="mb-8"
               >
-                {String(activeTestimonial.quote)
-                  .split(" ")
-                  .map((word, i) => (
+                <span className="inline-flex items-center gap-2 text-xs font-mono text-muted-foreground border border-border rounded-full px-3 py-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                  {current.company}
+                </span>
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Quote with character reveal */}
+            <div className="relative mb-12 min-h-[140px]">
+              <AnimatePresence mode="wait">
+                <motion.blockquote
+                  key={activeIndex}
+                  className="text-4xl md:text-5xl font-light text-foreground leading-[1.15] tracking-tight"
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                >
+                  {current.quote.split(" ").map((word, i) => (
                     <motion.span
-                      key={`${word}-${i}`}
-                      initial={{ filter: "blur(10px)", opacity: 0, y: 5 }}
-                      animate={{ filter: "blur(0px)", opacity: 1, y: 0 }}
-                      transition={{
-                        duration: 0.22,
-                        ease: "easeInOut",
-                        delay: 0.025 * i,
+                      key={i}
+                      className="inline-block mr-[0.3em]"
+                      variants={{
+                        hidden: { opacity: 0, y: 20, rotateX: 90 },
+                        visible: {
+                          opacity: 1,
+                          y: 0,
+                          rotateX: 0,
+                          transition: {
+                            duration: 0.5,
+                            delay: i * 0.05,
+                            ease: [0.22, 1, 0.36, 1],
+                          },
+                        },
+                        exit: {
+                          opacity: 0,
+                          y: -10,
+                          transition: { duration: 0.2, delay: i * 0.02 },
+                        },
                       }}
-                      className="inline-block"
                     >
-                      {word}&nbsp;
+                      {word}
                     </motion.span>
                   ))}
-              </motion.p>
-            </motion.div>
-          </AnimatePresence>
+                </motion.blockquote>
+              </AnimatePresence>
+            </div>
 
-          <div className="mt-8 flex gap-4 md:mt-0">
-            <button
-              type="button"
-              onClick={handlePrev}
-              onMouseEnter={() => setHoverPrev(true)}
-              onMouseLeave={() => setHoverPrev(false)}
-              aria-label="Previous testimonial"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-black/10 transition"
-              style={{
-                backgroundColor: hoverPrev ? colorArrowHoverBg : colorArrowBg,
-              }}
-            >
-              <ChevronLeft className="h-6 w-6" style={{ color: colorArrowFg }} />
-            </button>
+            {/* Author row */}
+            <div className="flex items-end justify-between">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeIndex}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.4, delay: 0.2 }}
+                  className="flex items-center gap-4"
+                >
+                  {/* Animated line before name */}
+                  <motion.div
+                    className="w-8 h-px bg-foreground"
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ duration: 0.6, delay: 0.3 }}
+                    style={{ originX: 0 }}
+                  />
+                  <div>
+                    <p className="text-base font-medium text-foreground">{current.author}</p>
+                    <p className="text-sm text-muted-foreground">{current.role}</p>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
 
-            <button
-              type="button"
-              onClick={handleNext}
-              onMouseEnter={() => setHoverNext(true)}
-              onMouseLeave={() => setHoverNext(false)}
-              aria-label="Next testimonial"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-black/10 transition"
-              style={{
-                backgroundColor: hoverNext ? colorArrowHoverBg : colorArrowBg,
-              }}
-            >
-              <ChevronRight className="h-6 w-6" style={{ color: colorArrowFg }} />
-            </button>
+              {/* Navigation */}
+              <div className="flex items-center gap-4">
+                <motion.button
+                  onClick={goPrev}
+                  className="group relative w-12 h-12 rounded-full border border-border flex items-center justify-center overflow-hidden"
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <motion.div className="absolute inset-0 bg-foreground" initial={{ x: "-100%" }} />
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    className="relative z-10 text-foreground group-hover:text-foreground/30 transition-colors"
+                  >
+                    <path
+                      d="M10 12L6 8L10 4"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </motion.button>
+
+                <motion.button
+                  onClick={goNext}
+                  className="group relative w-12 h-12 rounded-full border border-border flex items-center justify-center overflow-hidden"
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <motion.div className="absolute inset-0 bg-foreground" initial={{ x: "100%" }} />
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    className="relative z-10 text-foreground group-hover:text-foreground/30 transition-colors"
+                  >
+                    <path
+                      d="M6 4L10 8L6 12"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </motion.button>
+              </div>
+            </div>
           </div>
+        </div>
+
+        {/* Bottom ticker - subtle repeating company names */}
+        <div className="absolute -bottom-20 left-0 right-0 overflow-hidden opacity-[0.08] pointer-events-none">
+          <motion.div
+            className="flex whitespace-nowrap text-6xl font-bold tracking-tight"
+            animate={{ x: [0, -1000] }}
+            transition={{ duration: 20, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+          >
+            {[...Array(10)].map((_, i) => (
+              <span key={i} className="mx-8">
+                {testimonials.map((t) => t.company).join(" • ")} •
+              </span>
+            ))}
+          </motion.div>
         </div>
       </div>
     </div>
-  );
+  )
 }
-
-export default CircularTestimonials;

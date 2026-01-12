@@ -28,12 +28,12 @@ export default function LocationSection() {
               <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/30 via-transparent to-transparent" />
 
               {/* Floating badge */}
-              <div className="absolute bottom-6 left-6 backdrop-blur-xl bg-white/20 border border-white/30 rounded-2xl px-5 py-4 shadow-xl">
+              {/* <div className="absolute bottom-6 left-6 backdrop-blur-xl bg-white/20 border border-white/30 rounded-2xl px-5 py-4 shadow-xl">
                 <p className="text-xs uppercase tracking-widest text-white/80">
                   You’re here
                 </p>
                 <p className="text-lg font-bold text-white">Restorang</p>
-              </div>
+              </div> */}
             </div>
           </div>
 
